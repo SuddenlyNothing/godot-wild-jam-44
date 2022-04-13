@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+
+uniform vec2 time_factor = vec2(2.0, 3.0);
+uniform vec2 offset_factor = vec2(5.0, 2.0);
+uniform vec2 amplitude = vec2(0.05, 0.05);
+
+void fragment() {
+	
+	vec2 wave_uv_offset;
+	wave_uv_offset.x += sin(TIME * time_factor.x + (UV.x + UV.y) * offset_factor.x);
+	wave_uv_offset.y += cos(TIME * time_factor.y + (UV.x + UV.y) * offset_factor.y);
+	
+
+	COLOR = texture(TEXTURE, UV + wave_uv_offset * amplitude);
+
+}"
+
+[resource]
+shader = SubResource( 6 )
+shader_param/time_factor = Vector2( 2, 3 )
+shader_param/offset_factor = Vector2( 5, 2 )
+shader_param/amplitude = Vector2( 0.05, 0.05 )

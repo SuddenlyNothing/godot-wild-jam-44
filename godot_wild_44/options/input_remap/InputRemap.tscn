@@ -18,4 +18,19 @@ size_flags_horizontal = 8
 text = "Reset Controls"
 script = ExtResource( 2 )
 
+[node name="SC" type="ScrollContainer" parent="."]
+margin_top = 30.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="ModuleParent" type="VBoxContainer" parent="SC"]
+margin_right = 1024.0
+margin_bottom = 570.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 10
+
 [connection signal="pressed" from="ResetAll" to="." method="_on_ResetAll_pressed"]

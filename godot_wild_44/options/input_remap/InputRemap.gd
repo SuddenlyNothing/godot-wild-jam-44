@@ -1,17 +1,20 @@
 extends VBoxContainer
 
+# Font used for buttons
+export(String, FILE, "*.ttf") var font_path : String
+
 const InputRemapModule := preload("res://options/input_remap/"+
 		"InputRemapModule.tscn")
 
 # Translates button constants to strings.
 const MOUSE_BUTTONS = {
-	BUTTON_LEFT: "BUTTON_LEFT", # Left mouse button.
-	BUTTON_RIGHT: "BUTTON_RIGHT", # Right mouse button.
-	BUTTON_MIDDLE: "BUTTON_MIDDLE", # Middle mouse button.
+	BUTTON_LEFT: "Left click", # Left mouse button.
+	BUTTON_RIGHT: "Right click", # Right mouse button.
+	BUTTON_MIDDLE: "Middle mouse button", # Middle mouse button.
 	BUTTON_XBUTTON1: "BUTTON_XBUTTON1", # Extra mouse button 1
 	BUTTON_XBUTTON2: "BUTTON_XBUTTON2", # Extra mouse button 2
-	BUTTON_WHEEL_UP: "BUTTON_WHEEL_UP", # Mouse wheel up.
-	BUTTON_WHEEL_DOWN: "BUTTON_WHEEL_DOWN", # Mouse wheel down.
+	BUTTON_WHEEL_UP: "Scroll up", # Mouse wheel up.
+	BUTTON_WHEEL_DOWN: "Scroll down", # Mouse wheel down.
 	BUTTON_WHEEL_LEFT: "BUTTON_WHEEL_LEFT", # Mouse wheel left button
 	BUTTON_WHEEL_RIGHT: "BUTTON_WHEEL_RIGHT", # Mouse wheel right button
 }
@@ -19,9 +22,6 @@ const MOUSE_BUTTONS = {
 # Used for determining key button font size
 const BUTTON_H_CONTENT_MARGIN : int = 30
 const DEFAULT_FONT_SIZE : int = 28
-
-# Font used for buttons
-export(String, FILE, "*.ttf") var font_path : String
 
 # True when a key is being remapped
 var is_mapping : bool = false
@@ -38,6 +38,7 @@ var map_key_button := {
 var reset_buttons = {}
 
 onready var reset_all := $ResetAll
+onready var module_parent := $SC/ModuleParent
 
 
 # Called by the Save singleton
@@ -99,7 +100,6 @@ func add_new_input_remap_module(action: String, events: Array,
 			"default_inputs": [],
 			"inputs": [],
 		}
-	
 	for i in events.size():
 		if not from_save:
 			Save.data.actions[action].inputs.append(events[i])
@@ -107,9 +107,10 @@ func add_new_input_remap_module(action: String, events: Array,
 		InputMap.action_add_event(action, events[i])
 		add_new_key_button(buttons_parent, events[i], action, i)
 	
+	module_parent.add_child(input_remap_module)
+	
 	# Update input format
 	update_action_format(action)
-	add_child(input_remap_module)
 	
 	set_reset_visible(action)
 
