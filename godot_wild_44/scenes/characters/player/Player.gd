@@ -92,7 +92,7 @@ func _attack() -> void:
 
 func _melee_attack() -> void:
 	for enemy in enemies_in_hitbox:
-		prints("attack", enemy)
+		enemy.hit("pick")
 
 
 func _play_anim(anim: String) -> void:

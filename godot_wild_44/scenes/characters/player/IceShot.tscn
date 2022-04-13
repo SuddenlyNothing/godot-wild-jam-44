@@ -12,7 +12,7 @@ particles_anim_loop = false
 [sub_resource type="CircleShape2D" id=3]
 radius = 5.5
 
-[node name="IceShot" type="Area2D"]
+[node name="IceShot" type="Area2D" groups=["ice_shot"]]
 script = ExtResource( 2 )
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]

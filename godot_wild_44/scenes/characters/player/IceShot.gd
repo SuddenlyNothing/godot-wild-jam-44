@@ -14,6 +14,8 @@ func _physics_process(delta: float) -> void:
 func _on_IceShot_area_entered(area: Area2D) -> void:
 	if not area.is_in_group("enemy"):
 		return
+	if not is_queued_for_deletion():
+		area.hit("ice_shot")
 	explode()
 
 

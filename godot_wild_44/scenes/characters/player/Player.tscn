@@ -172,7 +172,7 @@ current = true
 zoom = Vector2( 0.5, 0.5 )
 
 [node name="MeleeTimer" type="Timer" parent="."]
-wait_time = 0.3
+wait_time = 0.5
 one_shot = true
 
 [node name="ShootTimer" type="Timer" parent="."]
