@@ -19,6 +19,8 @@ onready var melee_timer := $MeleeTimer
 onready var shoot_timer := $ShootTimer
 onready var shoot_pos := $ShootPos
 onready var hitbox := $Hitbox
+onready var respawn_timer := $RespawnTimer
+onready var t := $Tween
 
 
 func _ready() -> void:
@@ -44,6 +46,11 @@ func drown() -> void:
 	splash.position = position
 	get_parent().add_child(splash)
 	player_states.call_deferred("set_state", "death")
+	respawn_timer.start()
+	t.interpolate_property(self, "position", position,
+			get_tree().get_nodes_in_group("ice_tiles")[0].get_nearest_valid_pos(position),
+			respawn_timer.wait_time, Tween.TRANS_EXPO, Tween.EASE_IN)
+	t.start()
 
 
 func set_anim(anim_prefix: String) -> void:
@@ -116,3 +123,7 @@ func _on_Hitbox_area_exited(area: Area2D) -> void:
 	if not area.is_in_group("enemy"):
 		return
 	enemies_in_hitbox.erase(area)
+
+
+func _on_RespawnTimer_timeout() -> void:
+	player_states.call_deferred("set_state", "idle")

@@ -189,5 +189,11 @@ position = Vector2( 0, -5 )
 position = Vector2( 24, 0 )
 shape = SubResource( 30 )
 
+[node name="RespawnTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_Hitbox_area_exited"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
