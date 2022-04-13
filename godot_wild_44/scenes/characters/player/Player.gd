@@ -3,6 +3,7 @@ extends KinematicBody2D
 signal started_pull
 
 const IceShot := preload("res://scenes/characters/player/IceShot.tscn")
+const Splash := preload("res://scenes/environment/Splash.tscn")
 
 const MAX_SPEED := 100
 const REACH := 24
@@ -36,6 +37,13 @@ func _process(_delta: float) -> void:
 
 func move() -> void:
 	move_and_slide(input * MAX_SPEED)
+
+
+func drown() -> void:
+	var splash := Splash.instance()
+	splash.position = position
+	get_parent().add_child(splash)
+	player_states.call_deferred("set_state", "death")
 
 
 func set_anim(anim_prefix: String) -> void:

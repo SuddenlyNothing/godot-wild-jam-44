@@ -38,9 +38,7 @@ func _enter_state(new_state : String, old_state) -> void:
 		states.walk:
 			pass
 		states.death:
-			parent.set_process(false)
-			parent.set_physics_process(false)
-			set_physics_process(false)
+			_set_disabled(true)
 
 # Called on exiting state.
 # old_state is the state being exited.
@@ -52,4 +50,12 @@ func _exit_state(old_state, new_state : String) -> void:
 		states.walk:
 			pass
 		states.death:
-			pass
+			_set_disabled(false)
+
+
+
+func _set_disabled(val: bool) -> void:
+	parent.set_process(not val)
+	parent.set_physics_process(not val)
+	set_physics_process(not val)
+	parent.visible = not val
