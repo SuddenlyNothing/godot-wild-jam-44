@@ -6,6 +6,7 @@ export(float) var friction := 800
 export(int) var attack_frame := 3
 export(float, 1) var slow_percent := 0.65
 export(int) var knockback_force := 200
+export(int) var step_frame := 5
 export(String) var after_attack_state := "idle"
 
 # If target_dir isn't null and is in idle state, goes to move state
@@ -20,6 +21,7 @@ onready var enemy_move_states := $EnemyMoveStates
 onready var soft_collision := $VisualDependents/SoftCollision
 onready var freeze_texture := $VisualDependents/FreezeTexture
 onready var soft_collision_collision := $VisualDependents/SoftCollision/CollisionShape2D
+onready var step_sfx := $StepSFX
 
 
 func move_towards_target_pos() -> void:
@@ -98,6 +100,10 @@ func _on_AnimatedSprite_frame_changed() -> void:
 		match anim_sprite.frame:
 			attack_frame:
 				attack()
+	elif anim_sprite.animation == "move_right":
+		match anim_sprite.frame:
+			step_frame:
+				step_sfx.play()
 
 
 func _on_AnimatedSprite_animation_finished() -> void:
