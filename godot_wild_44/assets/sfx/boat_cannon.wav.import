@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/boat_cannon.wav-5c4a96b61ed57fddac2938df4464b89b.sample"
+
+[deps]
+
+source_file="res://assets/sfx/boat_cannon.wav"
+dest_files=[ "res://.import/boat_cannon.wav-5c4a96b61ed57fddac2938df4464b89b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0

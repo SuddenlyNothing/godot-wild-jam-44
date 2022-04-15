@@ -6,7 +6,8 @@ const IceShot := preload("res://scenes/characters/player/IceShot.tscn")
 const Splash := preload("res://scenes/environment/Splash.tscn")
 
 const MAX_SPEED := 100
-const REACH := 24
+const REACH := 12
+const PICK_OFFSET := Vector2(0, -7)
 const KNOCKBACK_FORCE := 200
 const FRICTION := 800
 
@@ -16,12 +17,14 @@ var ice_tiles : Node
 var enemies_in_hitbox := {}
 var disabled := false setget set_disabled
 var knockback := Vector2()
+var look_dir := Vector2()
+var is_pick_left := true
 
 onready var player_states := $PlayerStates
-onready var anim_sprite := $AnimatedSprite
+onready var anim_sprite := $YSort/AnimatedSprite
 onready var melee_timer := $MeleeTimer
 onready var shoot_timer := $ShootTimer
-onready var shoot_pos := $ShootPos
+onready var shoot_pos := $YSort/SnowMachine/ShootPos
 onready var hitbox := $Hitbox
 onready var respawn_timer := $RespawnTimer
 onready var t := $Tween
@@ -32,6 +35,10 @@ onready var pick_swing_sfx := $PickSwingSFX
 onready var ice_shot_sfx := $IceShotSFX
 onready var splash_sfx := $SplashSFX
 onready var emerge_sfx := $EmergeSFX
+onready var pick := $YSort/Pick
+onready var swing_tween := $SwingTween
+onready var snow_machine := $YSort/SnowMachine
+onready var snow_machine_tween := $SnowMachineTween
 
 onready var body_collision := $CollisionShape2D
 onready var hitbox_collision := $Hitbox/CollisionShape2D
@@ -40,15 +47,21 @@ onready var soft_collision_collision := $SoftCollision/CollisionShape2D
 
 func _ready() -> void:
 	get_tree().call_group("needs_player", "set_player", self)
+	look_dir = get_local_mouse_position().normalized()
+	_set_pick_facing(1)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var new_input := Input.get_vector("left", "right", "up", "down")
 	if input != Vector2():
 		prev_input = input
 	input = new_input
 	
+	look_dir = (get_local_mouse_position() - PICK_OFFSET).normalized()
+	
 	_set_facing()
+	_set_pick_facing(delta)
+	_set_snow_machine_facing(delta)
 	_attack()
 
 
@@ -83,7 +96,7 @@ func hit(hit_dir: Vector2, hit_strength: int) -> void:
 
 
 func set_anim(anim_prefix: String) -> void:
-	var look_ang : float = shoot_pos.get_local_mouse_position().angle()
+	var look_ang : float = look_dir.angle()
 	var anim_dir := ""
 	match anim_prefix:
 		"walk":
@@ -139,20 +152,40 @@ func _attack() -> void:
 		return
 	if Input.is_action_pressed("melee"):
 		_melee_attack()
-		pick_swing_sfx.play()
-		melee_timer.start()
 	elif Input.is_action_pressed("shoot"):
-		var ice_shot := IceShot.instance()
-		ice_shot.position = shoot_pos.global_position
-		ice_shot.dir = shoot_pos.get_local_mouse_position().normalized()
-		get_parent().add_child(ice_shot)
-		shoot_timer.start()
-		ice_shot_sfx.play()
+		_ice_shot()
 
 
 func _melee_attack() -> void:
+	pick.show()
+	snow_machine.hide()
+	swing_tween.remove_all()
+	if is_pick_left:
+		swing_tween.interpolate_property(pick, "rotation", pick.rotation, pick.rotation - PI, 0.3,
+				Tween.TRANS_QUART, Tween.EASE_OUT)
+	else:
+		swing_tween.interpolate_property(pick, "rotation", pick.rotation, pick.rotation + PI, 0.3,
+				Tween.TRANS_QUART, Tween.EASE_OUT)
+	swing_tween.start()
+	is_pick_left = not is_pick_left
+	pick_swing_sfx.play()
+	melee_timer.start()
 	for enemy in enemies_in_hitbox:
-		enemy.hit("pick", shoot_pos.get_local_mouse_position().normalized())
+		enemy.hit("pick", look_dir)
+
+
+func _ice_shot() -> void:
+	snow_machine.show()
+	pick.hide()
+	var ice_shot := IceShot.instance()
+	ice_shot.position = shoot_pos.global_position
+	ice_shot.dir = (get_global_mouse_position() - shoot_pos.global_position).normalized()
+	get_parent().add_child(ice_shot)
+	shoot_timer.start()
+	ice_shot_sfx.play()
+	snow_machine_tween.remove_all()
+	snow_machine_tween.interpolate_property(snow_machine, "offset:y", 5, -3, 0.1)
+	snow_machine_tween.start()
 
 
 func play_anim(anim: String) -> void:
@@ -162,11 +195,33 @@ func play_anim(anim: String) -> void:
 
 
 func _set_facing() -> void:
-	var look_dir : Vector2 = shoot_pos.get_local_mouse_position()
 	if (look_dir.x > 0 and anim_sprite.scale.x < 0) or \
 			(look_dir.x < 0 and anim_sprite.scale.x > 0):
 		anim_sprite.scale.x *= -1
+
+
+func _set_pick_facing(delta: float) -> void:
+	if swing_tween.is_active():
+		return
+	pick.position = lerp(pick.position, look_dir * REACH + PICK_OFFSET, min(15 * delta, 1))
+	var pick_rot := look_dir.angle() + PI / 2
+	if is_pick_left:
+		pick_rot += PI / 2
+	else:
+		pick_rot -= PI / 2
+	pick.rotation = lerp_angle(pick.rotation, pick_rot, min(15 * delta, 1))
+	hitbox.position = look_dir * REACH * 2 + PICK_OFFSET
 	hitbox.rotation = look_dir.angle()
+
+
+func _set_snow_machine_facing(delta: float) -> void:
+	if (look_dir.x > 0 and snow_machine.scale.x > 0) or \
+			(look_dir.x < 0 and snow_machine.scale.x < 0):
+		snow_machine.scale.x *= -1
+	snow_machine.position = lerp(snow_machine.position, look_dir * REACH + PICK_OFFSET,
+			min(15 * delta, 1))
+	snow_machine.rotation = lerp_angle(snow_machine.rotation, look_dir.angle() + PI / 2,
+			min(15 * delta, 1))
 
 
 func _is_between(check_val: float, min_v: float, max_v: float) -> bool:

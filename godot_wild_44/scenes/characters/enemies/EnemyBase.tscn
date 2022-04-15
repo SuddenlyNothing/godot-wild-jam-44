@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/characters/enemies/EnemyBase.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/enemies/EnemyHurtbox.gd" type="Script" id=2]
@@ -6,6 +6,19 @@
 [ext_resource path="res://assets/sfx/frozen_break_1.wav" type="AudioStream" id=4]
 [ext_resource path="res://utils/MultiAudio2D.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/sfx/iceball_freeze.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/characters/walrus/attack.png" type="Texture" id=7]
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 64, 32 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 5 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -29,6 +42,8 @@ shader_param/hit_strength = 0.0
 
 [node name="EnemyBase" type="KinematicBody2D" groups=["drownable"]]
 script = ExtResource( 1 )
+spawn_frames = SubResource( 4 )
+sprite_offset = Vector2( 0, -11 )
 
 [node name="VisualDependents" type="Node2D" parent="."]
 material = SubResource( 2 )

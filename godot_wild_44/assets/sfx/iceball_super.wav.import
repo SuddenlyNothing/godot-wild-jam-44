@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/iceball_super.wav-b911cfc99e7b6169cfa99f9ff27d555b.sample"
+
+[deps]
+
+source_file="res://assets/sfx/iceball_super.wav"
+dest_files=[ "res://.import/iceball_super.wav-b911cfc99e7b6169cfa99f9ff27d555b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -6,6 +6,14 @@ var speed := 300
 var dir := Vector2()
 var exploded := false
 
+onready var t := $Tween
+onready var particles := $CPUParticles2D
+
+
+func _ready() -> void:
+	t.interpolate_property(particles, "scale_amount", 0, 1, 0.2, Tween.TRANS_CIRC, Tween.EASE_OUT)
+	t.start()
+
 
 func _physics_process(delta: float) -> void:
 	position += speed * delta * dir

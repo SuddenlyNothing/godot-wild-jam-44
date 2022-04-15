@@ -1,6 +1,8 @@
 class_name EnemyBase
 extends KinematicBody2D
 
+export(SpriteFrames) var spawn_frames
+export(Vector2) var sprite_offset
 export(int) var health: int = 3 setget set_health
 export(int) var max_freeze_health: int = 3
 export(Color) var slow_color := Color("dfeded")

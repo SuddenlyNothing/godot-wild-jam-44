@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://scenes/characters/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/player/PlayerStates.gd" type="Script" id=2]
@@ -15,6 +15,8 @@
 [ext_resource path="res://assets/sfx/iceball throw.wav" type="AudioStream" id=13]
 [ext_resource path="res://assets/sfx/water_splash.wav" type="AudioStream" id=14]
 [ext_resource path="res://assets/sfx/water_emerge.wav" type="AudioStream" id=15]
+[ext_resource path="res://assets/characters/player/Icepick1.png" type="Texture" id=16]
+[ext_resource path="res://assets/characters/player/snow_machine.png" type="Texture" id=17]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -174,10 +176,11 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=30]
+extents = Vector2( 10, 15 )
+
 [sub_resource type="RectangleShape2D" id=33]
 extents = Vector2( 5, 2.5 )
-
-[sub_resource type="RectangleShape2D" id=30]
 
 [sub_resource type="RectangleShape2D" id=31]
 extents = Vector2( 7.5, 4.5 )
@@ -196,14 +199,37 @@ audio_stream = ExtResource( 14 )
 collision_layer = 0
 script = ExtResource( 1 )
 
-[node name="PlayerStates" type="Node" parent="."]
-script = ExtResource( 2 )
+[node name="YSort" type="YSort" parent="."]
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="YSort"]
 material = SubResource( 32 )
-position = Vector2( 0, -16 )
+position = Vector2( 0, -8 )
 frames = SubResource( 2 )
 animation = "idle_down"
+offset = Vector2( 0, -8 )
+
+[node name="Pick" type="Sprite" parent="YSort"]
+visible = false
+rotation = 1.5708
+texture = ExtResource( 16 )
+offset = Vector2( 1, -15 )
+
+[node name="SnowMachine" type="Sprite" parent="YSort"]
+visible = false
+texture = ExtResource( 17 )
+offset = Vector2( -1, -3 )
+
+[node name="ShootPos" type="Position2D" parent="YSort/SnowMachine"]
+position = Vector2( 0, -10 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+position = Vector2( 0, -9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 30 )
+
+[node name="PlayerStates" type="Node" parent="."]
+script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -2.5 )
@@ -220,16 +246,6 @@ one_shot = true
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 0.4
 one_shot = true
-
-[node name="ShootPos" type="Position2D" parent="."]
-position = Vector2( 0, -5 )
-
-[node name="Hitbox" type="Area2D" parent="."]
-position = Vector2( 0, -5 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2( 24, 0 )
-shape = SubResource( 30 )
 
 [node name="RespawnTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -265,7 +281,11 @@ bus = "SFX"
 stream = ExtResource( 15 )
 bus = "SFX"
 
-[connection signal="frame_changed" from="AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]
+[node name="SwingTween" type="Tween" parent="."]
+
+[node name="SnowMachineTween" type="Tween" parent="."]
+
+[connection signal="frame_changed" from="YSort/AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_Hitbox_area_exited"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]

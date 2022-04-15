@@ -26,6 +26,7 @@ texture = ExtResource( 1 )
 emission_shape = 1
 emission_sphere_radius = 1.5
 gravity = Vector2( 0, 0 )
+scale_amount = 0.0
 color = Color( 0.87451, 0.929412, 0.929412, 1 )
 anim_speed = 1.0
 
@@ -36,6 +37,8 @@ shape = SubResource( 3 )
 wait_time = 3.0
 one_shot = true
 autostart = true
+
+[node name="Tween" type="Tween" parent="."]
 
 [connection signal="area_entered" from="." to="." method="_on_IceShot_area_entered"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]

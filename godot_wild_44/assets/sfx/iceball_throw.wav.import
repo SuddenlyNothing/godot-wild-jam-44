@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/iceball_throw.wav-88615afd1bd918715623c4fdaf61ad65.sample"
+
+[deps]
+
+source_file="res://assets/sfx/iceball_throw.wav"
+dest_files=[ "res://.import/iceball_throw.wav-88615afd1bd918715623c4fdaf61ad65.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0
