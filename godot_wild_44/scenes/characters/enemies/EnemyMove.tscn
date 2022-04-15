@@ -8,7 +8,7 @@
 [ext_resource path="res://assets/characters/walrus/walk.png" type="Texture" id=6]
 [ext_resource path="res://scenes/characters/SoftCollision.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/characters/FreezeTexture.png" type="Texture" id=8]
-[ext_resource path="res://utils/MultiSFX.tscn" type="PackedScene" id=9]
+[ext_resource path="res://utils/MultiAudio2D.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/sfx/ice_step_5.wav" type="AudioStream" id=10]
 [ext_resource path="res://assets/sfx/ice_step_3.wav" type="AudioStream" id=12]
 
