@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/characters/enemies/EnemyMove.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/characters/enemies/Walrus.gd" type="Script" id=2]
+[ext_resource path="res://scenes/characters/enemies/WalrusMoveStates.gd" type="Script" id=3]
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform vec4 hit_color : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float hit_strength : hint_range(0.0,1.0) = 0.0;
+
+void fragment() {
+	vec4 custom_color = texture(TEXTURE, UV);
+	custom_color.rgb = mix(custom_color.rgb, hit_color.rgb, hit_strength);
+	COLOR = custom_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = SubResource( 2 )
+shader_param/hit_color = Color( 0.74902, 0.14902, 0.317647, 1 )
+shader_param/hit_strength = 0.0
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 13.0
+
+[node name="Walrus" groups=["needs_player"] instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+after_attack_state = "retreat"
+
+[node name="EnemyMoveStates" parent="." index="0"]
+script = ExtResource( 3 )
+
+[node name="VisualDependents" parent="." index="1"]
+material = SubResource( 3 )
+
+[node name="AnimatedSprite" parent="VisualDependents" index="1"]
+animation = "idle"
+
+[node name="Hitbox" type="Area2D" parent="VisualDependents" index="2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisualDependents/Hitbox" index="0"]
+position = Vector2( 20, -11 )
+shape = SubResource( 1 )
+
+[node name="AttackPos" type="Position2D" parent="VisualDependents" index="4"]
+position = Vector2( 22, -1 )
+
+[node name="IdleWaitTimer" type="Timer" parent="." index="6"]
+one_shot = true
+
+[node name="RetreatTimer" type="Timer" parent="." index="7"]
+one_shot = true
+
+[connection signal="body_entered" from="VisualDependents/Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="timeout" from="IdleWaitTimer" to="." method="_on_IdleWaitTimer_timeout"]
+[connection signal="timeout" from="RetreatTimer" to="." method="_on_RetreatTimer_timeout"]

@@ -1,0 +1,156 @@
+[gd_scene load_steps=32 format=2]
+
+[ext_resource path="res://scenes/characters/enemies/EnemyBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/characters/walrus/MoreRange.png" type="Texture" id=2]
+[ext_resource path="res://scenes/characters/enemies/EnemyMoveStates.gd" type="Script" id=3]
+[ext_resource path="res://scenes/characters/enemies/EnemyMove.gd" type="Script" id=4]
+[ext_resource path="res://assets/characters/walrus/attack.png" type="Texture" id=5]
+[ext_resource path="res://assets/characters/walrus/walk.png" type="Texture" id=6]
+[ext_resource path="res://scenes/characters/SoftCollision.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/characters/FreezeTexture.png" type="Texture" id=8]
+[ext_resource path="res://utils/MultiAudio2D.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/sfx/ice_step_5.wav" type="AudioStream" id=10]
+[ext_resource path="res://assets/sfx/ice_step_3.wav" type="AudioStream" id=12]
+
+[sub_resource type="Shader" id=31]
+code = "shader_type canvas_item;
+
+uniform vec4 hit_color : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float hit_strength : hint_range(0.0,1.0) = 0.0;
+
+void fragment() {
+	vec4 custom_color = texture(TEXTURE, UV);
+	custom_color.rgb = mix(custom_color.rgb, hit_color.rgb, hit_strength);
+	COLOR = custom_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=30]
+resource_local_to_scene = true
+shader = SubResource( 31 )
+shader_param/hit_color = Color( 0.74902, 0.14902, 0.317647, 1 )
+shader_param/hit_strength = 0.0
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 2 )
+region = Rect2( 256, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 2 )
+region = Rect2( 320, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 2 )
+region = Rect2( 384, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 6 )
+region = Rect2( 64, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 6 )
+region = Rect2( 128, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 6 )
+region = Rect2( 192, 0, 64, 32 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 6 )
+region = Rect2( 256, 0, 64, 32 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ SubResource( 16 ) ],
+"loop": false,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ) ],
+"loop": false,
+"name": "attack",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 17 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ) ],
+"loop": true,
+"name": "move_right",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=29]
+extents = Vector2( 10, 4 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 6, 2 )
+
+[sub_resource type="AudioStreamRandomPitch" id=32]
+
+[node name="EnemyMove" instance=ExtResource( 1 )]
+script = ExtResource( 4 )
+
+[node name="EnemyMoveStates" type="Node" parent="." index="0"]
+script = ExtResource( 3 )
+
+[node name="VisualDependents" parent="." index="1"]
+material = SubResource( 30 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisualDependents/Hurtbox" index="0"]
+polygon = PoolVector2Array( -4, 0, -24, 0, -24, -10, -16, -11, 1, -24, 10, -24, 21, -16, 23, -10, 22, -6, 17, 0, 6, 6, 0, 6 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="VisualDependents" index="1"]
+use_parent_material = true
+frames = SubResource( 9 )
+animation = "move_right"
+offset = Vector2( 0, -11 )
+
+[node name="SoftCollision" parent="VisualDependents" index="2" instance=ExtResource( 7 )]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisualDependents/SoftCollision" index="0"]
+position = Vector2( -2, -2 )
+shape = SubResource( 29 )
+
+[node name="FreezeTexture" type="Polygon2D" parent="VisualDependents" index="3"]
+visible = false
+texture = ExtResource( 8 )
+polygon = PoolVector2Array( 0, 6, -4, 1, -17, 3, -27, 0, -26, -9, -21, -14, -12, -16, -2, -24, 14, -26, 22, -21, 25, -12, 25, -5, 21, 1, 6, 7 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CollisionShape2D" parent="." index="2"]
+position = Vector2( 0, -2 )
+shape = SubResource( 8 )
+
+[node name="StepSFX" parent="." index="6" instance=ExtResource( 9 )]
+stream = SubResource( 32 )
+audio = [ ExtResource( 12 ), ExtResource( 10 ) ]
+
+[connection signal="animation_finished" from="VisualDependents/AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="frame_changed" from="VisualDependents/AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]

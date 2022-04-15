@@ -19,6 +19,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://utils/ButtonChangeScene.gd"
 }, {
+"base": "KinematicBody2D",
+"class": "EnemyBase",
+"language": "GDScript",
+"path": "res://scenes/characters/enemies/EnemyBase.gd"
+}, {
+"base": "EnemyBase",
+"class": "EnemyMove",
+"language": "GDScript",
+"path": "res://scenes/characters/enemies/EnemyMove.gd"
+}, {
+"base": "StateMachine",
+"class": "EnemyMoveStates",
+"language": "GDScript",
+"path": "res://scenes/characters/enemies/EnemyMoveStates.gd"
+}, {
 "base": "Node",
 "class": "StateMachine",
 "language": "GDScript",
@@ -27,6 +42,9 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "ButtonSFX": "",
 "ChangeScene": "",
+"EnemyBase": "",
+"EnemyMove": "",
+"EnemyMoveStates": "",
 "StateMachine": ""
 }
 
@@ -72,6 +90,16 @@ texture={
 "size_limit": 0,
 "stream": false,
 "svg/scale": 1.0
+}
+wav={
+"compress/mode": 0,
+"edit/loop": false,
+"edit/normalize": false,
+"edit/trim": true,
+"force/8_bit": false,
+"force/max_rate": false,
+"force/max_rate_hz": 44100,
+"force/mono": false
 }
 
 [input]

@@ -7,11 +7,15 @@ const Splash := preload("res://scenes/environment/Splash.tscn")
 
 const MAX_SPEED := 100
 const REACH := 24
+const KNOCKBACK_FORCE := 200
+const FRICTION := 800
 
 var prev_input := Vector2()
 var input := Vector2()
 var ice_tiles : Node
 var enemies_in_hitbox := {}
+var disabled := false setget set_disabled
+var knockback := Vector2()
 
 onready var player_states := $PlayerStates
 onready var anim_sprite := $AnimatedSprite
@@ -21,6 +25,17 @@ onready var shoot_pos := $ShootPos
 onready var hitbox := $Hitbox
 onready var respawn_timer := $RespawnTimer
 onready var t := $Tween
+onready var hit_flash_tween := $HitFlashTween
+onready var soft_collision := $SoftCollision
+onready var step_sfx := $StepSFX
+onready var pick_swing_sfx := $PickSwingSFX
+onready var ice_shot_sfx := $IceShotSFX
+onready var splash_sfx := $SplashSFX
+onready var emerge_sfx := $EmergeSFX
+
+onready var body_collision := $CollisionShape2D
+onready var hitbox_collision := $Hitbox/CollisionShape2D
+onready var soft_collision_collision := $SoftCollision/CollisionShape2D
 
 
 func _ready() -> void:
@@ -37,11 +52,18 @@ func _process(_delta: float) -> void:
 	_attack()
 
 
+func _physics_process(delta: float) -> void:
+	_apply_knockback(delta)
+
+
 func move() -> void:
 	move_and_slide(input * MAX_SPEED)
 
 
 func drown() -> void:
+	if not respawn_timer.is_inside_tree():
+		return
+	splash_sfx.play()
 	var splash := Splash.instance()
 	splash.position = position
 	get_parent().add_child(splash)
@@ -51,6 +73,13 @@ func drown() -> void:
 			get_tree().get_nodes_in_group("ice_tiles")[0].get_nearest_valid_pos(position),
 			respawn_timer.wait_time, Tween.TRANS_EXPO, Tween.EASE_IN)
 	t.start()
+
+
+func hit(hit_dir: Vector2, hit_strength: int) -> void:
+	hit_flash_tween.interpolate_property(anim_sprite.get_material(), "shader_param/hit_strength",
+			1, 0, 0.3)
+	hit_flash_tween.start()
+	knockback = KNOCKBACK_FORCE * hit_strength * hit_dir
 
 
 func set_anim(anim_prefix: String) -> void:
@@ -73,7 +102,36 @@ func set_anim(anim_prefix: String) -> void:
 				anim_dir = "up"
 			else:
 				anim_dir = "down"
-	_play_anim(anim_prefix + "_" + anim_dir)
+	play_anim(anim_prefix + "_" + anim_dir)
+
+
+func apply_soft_collision() -> void:
+	move_and_slide(soft_collision.get_push_velocity())
+
+
+func set_disabled(val: bool) -> void:
+	disabled = val
+	body_collision.call_deferred("set_disabled", val)
+	hitbox_collision.call_deferred("set_disabled", val)
+	soft_collision_collision.call_deferred("set_disabled", val)
+	set_process(not val)
+	set_physics_process(not val)
+	if val:
+		pass
+	visible = not val
+
+
+func _apply_knockback(delta: float) -> void:
+	move_and_slide(knockback)
+	_apply_friction(delta)
+
+
+func _apply_friction(delta: float) -> void:
+	var friction_amount := FRICTION * delta
+	if knockback.length() <= friction_amount:
+		knockback = Vector2()
+	else:
+		knockback -= FRICTION * delta * knockback.normalized()
 
 
 func _attack() -> void:
@@ -81,6 +139,7 @@ func _attack() -> void:
 		return
 	if Input.is_action_pressed("melee"):
 		_melee_attack()
+		pick_swing_sfx.play()
 		melee_timer.start()
 	elif Input.is_action_pressed("shoot"):
 		var ice_shot := IceShot.instance()
@@ -88,14 +147,15 @@ func _attack() -> void:
 		ice_shot.dir = shoot_pos.get_local_mouse_position().normalized()
 		get_parent().add_child(ice_shot)
 		shoot_timer.start()
+		ice_shot_sfx.play()
 
 
 func _melee_attack() -> void:
 	for enemy in enemies_in_hitbox:
-		enemy.hit("pick")
+		enemy.hit("pick", shoot_pos.get_local_mouse_position().normalized())
 
 
-func _play_anim(anim: String) -> void:
+func play_anim(anim: String) -> void:
 	if anim_sprite.animation == anim:
 		return
 	anim_sprite.play(anim)
@@ -126,4 +186,13 @@ func _on_Hitbox_area_exited(area: Area2D) -> void:
 
 
 func _on_RespawnTimer_timeout() -> void:
+	emerge_sfx.play()
 	player_states.call_deferred("set_state", "idle")
+
+
+func _on_AnimatedSprite_frame_changed() -> void:
+	match anim_sprite.animation:
+		"walk_right", "walk_down", "walk_up":
+			match anim_sprite.frame:
+				3, 7:
+					step_sfx.play()

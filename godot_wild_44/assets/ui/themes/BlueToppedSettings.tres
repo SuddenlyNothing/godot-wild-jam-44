@@ -51,21 +51,22 @@ expand_margin_right = 2.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id=23]
+[sub_resource type="StyleBoxFlat" id=27]
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="StyleBoxFlat" id=24]
+[sub_resource type="StyleBoxFlat" id=28]
+bg_color = Color( 0.768627, 0.768627, 0.768627, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="StyleBoxFlat" id=25]
+[sub_resource type="StyleBoxFlat" id=29]
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -93,8 +94,8 @@ HSlider/styles/grabber_area = SubResource( 18 )
 HSlider/styles/grabber_area_highlight = SubResource( 16 )
 HSlider/styles/slider = SubResource( 17 )
 Label/styles/normal = SubResource( 13 )
-VScrollBar/styles/grabber = SubResource( 23 )
-VScrollBar/styles/grabber_highlight = SubResource( 24 )
-VScrollBar/styles/grabber_pressed = SubResource( 25 )
+VScrollBar/styles/grabber = SubResource( 27 )
+VScrollBar/styles/grabber_highlight = SubResource( 28 )
+VScrollBar/styles/grabber_pressed = SubResource( 29 )
 VScrollBar/styles/scroll = SubResource( 22 )
 VScrollBar/styles/scroll_focus = SubResource( 26 )
