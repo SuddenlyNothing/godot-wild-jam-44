@@ -21,7 +21,15 @@ func _enter_state(new_state : String, old_state) -> void:
 		states.idle:
 			parent.start_idle_wait_timer()
 		states.retreat:
+			parent.hitbox_collision.call_deferred("set_disabled", true)
 			parent.set_retreat_dir()
 			parent.play_anim("move_right")
 			parent.start_retreat_timer()
 	._enter_state(new_state, old_state)
+
+
+func _exit_state(old_state, new_state : String) -> void:
+	match old_state:
+		states.retreat:
+			parent.hitbox_collision.call_deferred("set_disabled", false)
+	._exit_state(old_state, new_state)

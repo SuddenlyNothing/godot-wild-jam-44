@@ -8,6 +8,7 @@ onready var idle_wait_timer := $IdleWaitTimer
 onready var hitbox := $VisualDependents/Hitbox
 onready var attack_pos := $VisualDependents/AttackPos
 onready var retreat_timer := $RetreatTimer
+onready var hitbox_collision := $VisualDependents/Hitbox/CollisionShape2D
 
 
 func set_target() -> void:

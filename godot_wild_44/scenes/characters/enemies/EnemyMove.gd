@@ -3,7 +3,7 @@ extends EnemyBase
 
 export(float) var max_speed := 25
 export(float) var friction := 800
-export(int) var attack_frame := 3
+export(int) var attack_frame := 5
 export(float, 1) var slow_percent := 0.65
 export(int) var knockback_force := 200
 export(int) var step_frame := 5

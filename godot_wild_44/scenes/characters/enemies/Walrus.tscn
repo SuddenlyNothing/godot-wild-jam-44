@@ -41,11 +41,11 @@ animation = "idle"
 [node name="Hitbox" type="Area2D" parent="VisualDependents" index="2"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisualDependents/Hitbox" index="0"]
-position = Vector2( 10, -11 )
+position = Vector2( 20, -11 )
 shape = SubResource( 1 )
 
 [node name="AttackPos" type="Position2D" parent="VisualDependents" index="4"]
-position = Vector2( 19, -1 )
+position = Vector2( 22, -1 )
 
 [node name="IdleWaitTimer" type="Timer" parent="." index="6"]
 one_shot = true
