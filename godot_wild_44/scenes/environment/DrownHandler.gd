@@ -1,7 +1,6 @@
 extends Area2D
 
 
-
 func _on_DrownHandler_area_exited(area: Area2D) -> void:
 	if not area.is_in_group("drownable"):
 		return

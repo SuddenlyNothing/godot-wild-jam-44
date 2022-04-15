@@ -7,11 +7,15 @@ const Splash := preload("res://scenes/environment/Splash.tscn")
 
 const MAX_SPEED := 100
 const REACH := 24
+const KNOCKBACK_FORCE := 200
+const FRICTION := 800
 
 var prev_input := Vector2()
 var input := Vector2()
 var ice_tiles : Node
 var enemies_in_hitbox := {}
+var disabled := false setget set_disabled
+var knockback := Vector2()
 
 onready var player_states := $PlayerStates
 onready var anim_sprite := $AnimatedSprite
@@ -21,6 +25,12 @@ onready var shoot_pos := $ShootPos
 onready var hitbox := $Hitbox
 onready var respawn_timer := $RespawnTimer
 onready var t := $Tween
+onready var hit_flash_tween := $HitFlashTween
+onready var soft_collision := $SoftCollision
+
+onready var body_collision := $CollisionShape2D
+onready var hitbox_collision := $Hitbox/CollisionShape2D
+onready var soft_collision_collision := $SoftCollision/CollisionShape2D
 
 
 func _ready() -> void:
@@ -37,11 +47,17 @@ func _process(_delta: float) -> void:
 	_attack()
 
 
+func _physics_process(delta: float) -> void:
+	_apply_knockback(delta)
+
+
 func move() -> void:
 	move_and_slide(input * MAX_SPEED)
 
 
 func drown() -> void:
+	if not respawn_timer.is_inside_tree():
+		return
 	var splash := Splash.instance()
 	splash.position = position
 	get_parent().add_child(splash)
@@ -51,6 +67,13 @@ func drown() -> void:
 			get_tree().get_nodes_in_group("ice_tiles")[0].get_nearest_valid_pos(position),
 			respawn_timer.wait_time, Tween.TRANS_EXPO, Tween.EASE_IN)
 	t.start()
+
+
+func hit(hit_dir: Vector2, hit_strength: int) -> void:
+	hit_flash_tween.interpolate_property(anim_sprite.get_material(), "shader_param/hit_strength",
+			1, 0, 0.3)
+	hit_flash_tween.start()
+	knockback = KNOCKBACK_FORCE * hit_strength * hit_dir
 
 
 func set_anim(anim_prefix: String) -> void:
@@ -76,6 +99,35 @@ func set_anim(anim_prefix: String) -> void:
 	_play_anim(anim_prefix + "_" + anim_dir)
 
 
+func apply_soft_collision() -> void:
+	move_and_slide(soft_collision.get_push_velocity())
+
+
+func set_disabled(val: bool) -> void:
+	disabled = val
+	body_collision.call_deferred("set_disabled", val)
+	hitbox_collision.call_deferred("set_disabled", val)
+	soft_collision_collision.call_deferred("set_disabled", val)
+	set_process(not val)
+	set_physics_process(not val)
+	if val:
+		pass
+	visible = not val
+
+
+func _apply_knockback(delta: float) -> void:
+	move_and_slide(knockback)
+	_apply_friction(delta)
+
+
+func _apply_friction(delta: float) -> void:
+	var friction_amount := FRICTION * delta
+	if knockback.length() <= friction_amount:
+		knockback = Vector2()
+	else:
+		knockback -= FRICTION * delta * knockback.normalized()
+
+
 func _attack() -> void:
 	if not (melee_timer.is_stopped() and shoot_timer.is_stopped()):
 		return
@@ -92,7 +144,7 @@ func _attack() -> void:
 
 func _melee_attack() -> void:
 	for enemy in enemies_in_hitbox:
-		enemy.hit("pick")
+		enemy.hit("pick", shoot_pos.get_local_mouse_position().normalized())
 
 
 func _play_anim(anim: String) -> void:
