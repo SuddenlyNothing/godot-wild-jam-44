@@ -42,6 +42,7 @@ func _enter_state(new_state : String, old_state) -> void:
 		states.walk:
 			pass
 		states.death:
+			parent.play_anim("idle_right")
 			_set_disabled(true)
 
 

@@ -13,6 +13,8 @@ onready var freeze_timer := $FreezeTimer
 onready var slow_timer := $SlowTimer
 onready var visual_dependents := $VisualDependents
 onready var t := $Tween
+onready var frozen_break_sfx := $FrozenBreakSFX
+onready var freeze_sfx := $FreezeSFX
 
 
 func set_freeze_health(val: int) -> void:
@@ -30,6 +32,12 @@ func set_health(val: int, hit_dir: Vector2 = Vector2()) -> void:
 	if is_inside_tree() and val < health:
 		get_hit(hit_dir)
 	if val <= 0:
+		if freeze:
+			remove_child(frozen_break_sfx)
+			get_parent().add_child(frozen_break_sfx)
+			frozen_break_sfx.position = position
+			frozen_break_sfx.connect("finished", frozen_break_sfx, "queue_free")
+			frozen_break_sfx.play()
 		die()
 	health = val
 
@@ -51,11 +59,19 @@ func set_slow(val: bool) -> void:
 # Override to add freeze effects.
 func set_freeze(val: bool) -> void:
 	if val:
+		freeze_sfx.play()
 		_flash_slow()
+	else:
+		frozen_break_sfx.play()
 	freeze = val
 
 
 func die() -> void:
+	if frozen_break_sfx.playing and is_a_parent_of(frozen_break_sfx):
+		remove_child(frozen_break_sfx)
+		get_parent().add_child(frozen_break_sfx)
+		frozen_break_sfx.position = position
+		frozen_break_sfx.connect("finished", frozen_break_sfx, "queue_free")
 	queue_free()
 
 

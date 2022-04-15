@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/characters/enemies/EnemyBase.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/enemies/EnemyHurtbox.gd" type="Script" id=2]
+[ext_resource path="res://assets/sfx/frozen_break_2.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/sfx/frozen_break_1.wav" type="AudioStream" id=4]
+[ext_resource path="res://utils/MultiAudio2D.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/sfx/iceball_freeze.wav" type="AudioStream" id=6]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -20,6 +24,8 @@ resource_local_to_scene = true
 shader = SubResource( 1 )
 shader_param/hit_color = Color( 0.74902, 0.14902, 0.317647, 1 )
 shader_param/hit_strength = 0.0
+
+[sub_resource type="AudioStreamRandomPitch" id=3]
 
 [node name="EnemyBase" type="KinematicBody2D" groups=["drownable"]]
 script = ExtResource( 1 )
@@ -40,6 +46,14 @@ one_shot = true
 one_shot = true
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="FrozenBreakSFX" parent="." instance=ExtResource( 5 )]
+stream = SubResource( 3 )
+audio = [ ExtResource( 4 ), ExtResource( 3 ) ]
+
+[node name="FreezeSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+bus = "SFX"
 
 [connection signal="hit" from="VisualDependents/Hurtbox" to="." method="_on_Hurtbox_hit"]
 [connection signal="timeout" from="FreezeTimer" to="." method="_on_FreezeTimer_timeout"]

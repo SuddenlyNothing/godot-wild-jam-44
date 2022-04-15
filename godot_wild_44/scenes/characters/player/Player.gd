@@ -27,6 +27,11 @@ onready var respawn_timer := $RespawnTimer
 onready var t := $Tween
 onready var hit_flash_tween := $HitFlashTween
 onready var soft_collision := $SoftCollision
+onready var step_sfx := $StepSFX
+onready var pick_swing_sfx := $PickSwingSFX
+onready var ice_shot_sfx := $IceShotSFX
+onready var splash_sfx := $SplashSFX
+onready var emerge_sfx := $EmergeSFX
 
 onready var body_collision := $CollisionShape2D
 onready var hitbox_collision := $Hitbox/CollisionShape2D
@@ -58,6 +63,7 @@ func move() -> void:
 func drown() -> void:
 	if not respawn_timer.is_inside_tree():
 		return
+	splash_sfx.play()
 	var splash := Splash.instance()
 	splash.position = position
 	get_parent().add_child(splash)
@@ -96,7 +102,7 @@ func set_anim(anim_prefix: String) -> void:
 				anim_dir = "up"
 			else:
 				anim_dir = "down"
-	_play_anim(anim_prefix + "_" + anim_dir)
+	play_anim(anim_prefix + "_" + anim_dir)
 
 
 func apply_soft_collision() -> void:
@@ -133,6 +139,7 @@ func _attack() -> void:
 		return
 	if Input.is_action_pressed("melee"):
 		_melee_attack()
+		pick_swing_sfx.play()
 		melee_timer.start()
 	elif Input.is_action_pressed("shoot"):
 		var ice_shot := IceShot.instance()
@@ -140,6 +147,7 @@ func _attack() -> void:
 		ice_shot.dir = shoot_pos.get_local_mouse_position().normalized()
 		get_parent().add_child(ice_shot)
 		shoot_timer.start()
+		ice_shot_sfx.play()
 
 
 func _melee_attack() -> void:
@@ -147,7 +155,7 @@ func _melee_attack() -> void:
 		enemy.hit("pick", shoot_pos.get_local_mouse_position().normalized())
 
 
-func _play_anim(anim: String) -> void:
+func play_anim(anim: String) -> void:
 	if anim_sprite.animation == anim:
 		return
 	anim_sprite.play(anim)
@@ -178,4 +186,13 @@ func _on_Hitbox_area_exited(area: Area2D) -> void:
 
 
 func _on_RespawnTimer_timeout() -> void:
+	emerge_sfx.play()
 	player_states.call_deferred("set_state", "idle")
+
+
+func _on_AnimatedSprite_frame_changed() -> void:
+	match anim_sprite.animation:
+		"walk_right", "walk_down", "walk_up":
+			match anim_sprite.frame:
+				3, 7:
+					step_sfx.play()

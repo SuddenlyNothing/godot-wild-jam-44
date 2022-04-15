@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://scenes/characters/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/player/PlayerStates.gd" type="Script" id=2]
@@ -6,6 +6,15 @@
 [ext_resource path="res://assets/characters/player/player_walk_down.png" type="Texture" id=4]
 [ext_resource path="res://assets/characters/player/player_walk_up.png" type="Texture" id=5]
 [ext_resource path="res://scenes/characters/SoftCollision.tscn" type="PackedScene" id=6]
+[ext_resource path="res://utils/MultiAudio.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/sfx/ice_step_2.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/sfx/ice_step_4.wav" type="AudioStream" id=9]
+[ext_resource path="res://assets/sfx/ice_step_1.wav" type="AudioStream" id=10]
+[ext_resource path="res://assets/sfx/pick_swing_2.wav" type="AudioStream" id=11]
+[ext_resource path="res://assets/sfx/pick_swing_1.wav" type="AudioStream" id=12]
+[ext_resource path="res://assets/sfx/iceball throw.wav" type="AudioStream" id=13]
+[ext_resource path="res://assets/sfx/water_splash.wav" type="AudioStream" id=14]
+[ext_resource path="res://assets/sfx/water_emerge.wav" type="AudioStream" id=15]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -173,6 +182,16 @@ extents = Vector2( 5, 2.5 )
 [sub_resource type="RectangleShape2D" id=31]
 extents = Vector2( 7.5, 4.5 )
 
+[sub_resource type="AudioStreamRandomPitch" id=34]
+
+[sub_resource type="AudioStreamRandomPitch" id=35]
+
+[sub_resource type="AudioStreamRandomPitch" id=36]
+audio_stream = ExtResource( 13 )
+
+[sub_resource type="AudioStreamRandomPitch" id=37]
+audio_stream = ExtResource( 14 )
+
 [node name="Player" type="KinematicBody2D" groups=["drownable", "player"]]
 collision_layer = 0
 script = ExtResource( 1 )
@@ -226,6 +245,27 @@ shape = SubResource( 31 )
 
 [node name="HitFlashTween" type="Tween" parent="."]
 
+[node name="StepSFX" parent="." instance=ExtResource( 7 )]
+stream = SubResource( 34 )
+audio = [ ExtResource( 10 ), ExtResource( 8 ), ExtResource( 9 ) ]
+
+[node name="PickSwingSFX" parent="." instance=ExtResource( 7 )]
+stream = SubResource( 35 )
+audio = [ ExtResource( 12 ), ExtResource( 11 ) ]
+
+[node name="IceShotSFX" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 36 )
+bus = "SFX"
+
+[node name="SplashSFX" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 37 )
+bus = "SFX"
+
+[node name="EmergeSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+bus = "SFX"
+
+[connection signal="frame_changed" from="AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_Hitbox_area_exited"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]

@@ -20,7 +20,7 @@ func _on_IceShot_area_entered(area: Area2D) -> void:
 
 
 func _on_DeathTimer_timeout() -> void:
-	explode()
+	queue_free()
 
 
 func explode() -> void:

@@ -24,10 +24,6 @@ tile_data = PoolIntArray( 327690, 0, 8, 327691, 0, 10, 327692, 0, 10, 327693, 0,
 position = Vector2( 377, 238 )
 
 [node name="Walrus" parent="YSort" groups=["drownable"] instance=ExtResource( 6 )]
-position = Vector2( 320, 165 )
-health = 331
-
-[node name="Walrus2" parent="YSort" groups=["drownable"] instance=ExtResource( 6 )]
-position = Vector2( 367, 281 )
+position = Vector2( 324, 175 )
 
 [connection signal="started_pull" from="YSort/Player" to="DrownHandler/IceTiles" method="_on_Player_started_pull"]
