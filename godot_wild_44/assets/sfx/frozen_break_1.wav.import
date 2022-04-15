@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/frozen_break_1.wav-537e99f568b13221c2508dc0bdb64fac.sample"
+
+[deps]
+
+source_file="res://assets/sfx/frozen_break_1.wav"
+dest_files=[ "res://.import/frozen_break_1.wav-537e99f568b13221c2508dc0bdb64fac.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

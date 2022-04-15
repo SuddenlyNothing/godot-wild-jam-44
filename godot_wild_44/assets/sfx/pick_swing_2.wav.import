@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/pick_swing_2.wav-c8f67abd5bf0c437e6d1dcd156627f5b.sample"
+
+[deps]
+
+source_file="res://assets/sfx/pick_swing_2.wav"
+dest_files=[ "res://.import/pick_swing_2.wav-c8f67abd5bf0c437e6d1dcd156627f5b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

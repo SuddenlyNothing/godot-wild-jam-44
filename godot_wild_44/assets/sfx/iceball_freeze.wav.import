@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/iceball_freeze.wav-360440e48135c2c39eb9fb3d152c259f.sample"
+
+[deps]
+
+source_file="res://assets/sfx/iceball_freeze.wav"
+dest_files=[ "res://.import/iceball_freeze.wav-360440e48135c2c39eb9fb3d152c259f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

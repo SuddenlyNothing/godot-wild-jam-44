@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ice_step_2.wav-c18e342df6fe3a464c2656ad0c3031d4.sample"
+
+[deps]
+
+source_file="res://assets/sfx/ice_step_2.wav"
+dest_files=[ "res://.import/ice_step_2.wav-c18e342df6fe3a464c2656ad0c3031d4.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/iceball_hit_3.wav-281fe225932746c09bf90ae502155c78.sample"
+
+[deps]
+
+source_file="res://assets/sfx/iceball_hit_3.wav"
+dest_files=[ "res://.import/iceball_hit_3.wav-281fe225932746c09bf90ae502155c78.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
