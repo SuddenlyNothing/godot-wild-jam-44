@@ -1,0 +1,161 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://scenes/characters/enemies/EnemyMove.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/characters/enemies/PolarBear.gd" type="Script" id=2]
+[ext_resource path="res://assets/characters/bear/polar_bear_walk.png" type="Texture" id=3]
+[ext_resource path="res://assets/characters/bear/polar_bear_attack.png" type="Texture" id=4]
+[ext_resource path="res://scenes/characters/enemies/PolarBearMoveStates.gd" type="Script" id=5]
+
+[sub_resource type="AtlasTexture" id=49]
+atlas = ExtResource( 3 )
+region = Rect2( 160, 0, 80, 64 )
+
+[sub_resource type="SpriteFrames" id=48]
+animations = [ {
+"frames": [ SubResource( 49 ) ],
+"loop": false,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=31]
+code = "shader_type canvas_item;
+
+uniform vec4 hit_color : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float hit_strength : hint_range(0.0,1.0) = 0.0;
+
+void fragment() {
+	vec4 custom_color = texture(TEXTURE, UV);
+	custom_color.rgb = mix(custom_color.rgb, hit_color.rgb, hit_strength);
+	COLOR = custom_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=32]
+resource_local_to_scene = true
+shader = SubResource( 31 )
+shader_param/hit_color = Color( 0.74902, 0.14902, 0.317647, 1 )
+shader_param/hit_strength = 0.0
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 3 )
+region = Rect2( 80, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 3 )
+region = Rect2( 160, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 3 )
+region = Rect2( 240, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 3 )
+region = Rect2( 320, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 3 )
+region = Rect2( 400, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=41]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=42]
+atlas = ExtResource( 4 )
+region = Rect2( 80, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=43]
+atlas = ExtResource( 4 )
+region = Rect2( 160, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=44]
+atlas = ExtResource( 4 )
+region = Rect2( 240, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=45]
+atlas = ExtResource( 4 )
+region = Rect2( 320, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=46]
+atlas = ExtResource( 4 )
+region = Rect2( 400, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=47]
+atlas = ExtResource( 4 )
+region = Rect2( 480, 0, 80, 64 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 3 )
+region = Rect2( 160, 0, 80, 64 )
+
+[sub_resource type="SpriteFrames" id=33]
+animations = [ {
+"frames": [ SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ) ],
+"loop": true,
+"name": "move_right",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 41 ), SubResource( 42 ), SubResource( 43 ), SubResource( 44 ), SubResource( 45 ), SubResource( 46 ), SubResource( 47 ) ],
+"loop": false,
+"name": "attack",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 40 ) ],
+"loop": false,
+"name": "idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=50]
+radius = 23.0
+
+[sub_resource type="RectangleShape2D" id=51]
+extents = Vector2( 14, 3 )
+
+[node name="PolarBear" groups=["needs_player"] instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+spawn_frames = SubResource( 48 )
+sprite_offset = Vector2( 10, -29 )
+
+[node name="EnemyMoveStates" parent="." index="0"]
+script = ExtResource( 5 )
+
+[node name="VisualDependents" parent="." index="1"]
+material = SubResource( 32 )
+
+[node name="CollisionPolygon2D" parent="VisualDependents/Hurtbox" index="0"]
+polygon = PoolVector2Array( 20, 2, 25, -19, 36, -28, 36, -35, -11, -36, -24, -27, -24, 0 )
+
+[node name="AnimatedSprite" parent="VisualDependents" index="1"]
+frames = SubResource( 33 )
+animation = "idle"
+offset = Vector2( 10, -29 )
+
+[node name="FreezeTexture" parent="VisualDependents" index="3"]
+polygon = PoolVector2Array( -24, 1, -8.09182, 1.36155, 10, 2, 21, 2, 25, -19, 37, -28, 37, -36, 24, -39, 16, -37, -6, -39, -26, -27, -24, -15 )
+
+[node name="Hitbox" type="Area2D" parent="VisualDependents" index="4"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisualDependents/Hitbox" index="0"]
+position = Vector2( 26, -21 )
+shape = SubResource( 50 )
+
+[node name="AttackPos" type="Position2D" parent="VisualDependents" index="5"]
+position = Vector2( 34, -3 )
+
+[node name="CollisionShape2D" parent="." index="2"]
+shape = SubResource( 51 )
+
+[node name="IdleWaitTimer" type="Timer" parent="." index="10"]
+one_shot = true
+
+[node name="RetreatTimer" type="Timer" parent="." index="11"]
+one_shot = true
+
+[connection signal="body_entered" from="VisualDependents/Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="timeout" from="IdleWaitTimer" to="." method="_on_IdleWaitTimer_timeout"]
+[connection signal="timeout" from="RetreatTimer" to="." method="_on_RetreatTimer_timeout"]
