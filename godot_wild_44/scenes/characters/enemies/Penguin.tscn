@@ -123,6 +123,7 @@ polygon = PoolVector2Array( -12, 22, -18, 16, -19, -5, -12, -12, 12, -10, 23, 2,
 use_parent_material = true
 frames = SubResource( 16 )
 animation = "idle"
+frame = 3
 playing = true
 offset = Vector2( 0, -7 )
 

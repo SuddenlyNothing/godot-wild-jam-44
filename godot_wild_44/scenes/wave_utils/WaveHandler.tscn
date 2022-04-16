@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/wave_utils/WaveHandler.gd" type="Script" id=1]
+
+[node name="WaveHandler" type="Node"]
+script = ExtResource( 1 )
+
+[node name="SpawnDelay" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="SpawnDelay" to="." method="_on_SpawnDelay_timeout"]

@@ -1,6 +1,9 @@
+tool
 extends Node2D
 
-export(PackedScene) var Enemy
+signal enemy_eliminated
+
+export(PackedScene) var Enemy setget set_Enemy
 export(int) var drop_offset := 100
 export(bool) var do_drop := true
 
@@ -11,9 +14,16 @@ onready var t := $Tween
 onready var anim_sprite := $AnimatedSprite
 
 
-func _ready() -> void:
+func _enter_tree() -> void:
+	_draw_enemy()
+
+
+func spawn() -> void:
 	if do_drop:
 		enemy = Enemy.instance()
+		anim_sprite.show()
+		anim_sprite.position.y = -drop_offset
+		anim_sprite.modulate.a = 0
 		anim_sprite.frames = enemy.spawn_frames
 		anim_sprite.offset = enemy.sprite_offset
 		anim_sprite.play("default")
@@ -22,21 +32,43 @@ func _ready() -> void:
 		t.interpolate_property(anim_sprite, "modulate:a", 0, 1, 1)
 		t.start()
 	else:
-		yield(get_tree(), "idle_frame")
 		enemy = Enemy.instance()
 		enemy.position = position
 		if enemy.is_in_group("needs_player"):
 			enemy.set_player(player)
-		get_parent().add_child(enemy)
+		get_parent().call_deferred("add_child", enemy)
+	if player and player.position.x < position.x:
+		if "face_pos" in enemy:
+			enemy.face_pos = player.position
+			if (player.position.x < position.x and anim_sprite.scale.x > 0) or \
+				(player.position.x > position.x and anim_sprite.scale.x < 0):
+					anim_sprite.scale.x *= -1
+	enemy.connect("tree_exited", self, "emit_signal", ["enemy_eliminated"])
 
 
 func set_player(val: Node) -> void:
+	if enemy:
+		if enemy.is_in_group("needs_player"):
+			enemy.set_player(player)
 	player = val
+
+
+func set_Enemy(val: PackedScene) -> void:
+	Enemy = val
+	_draw_enemy()
+
+
+func _draw_enemy() -> void:
+	if Engine.editor_hint:
+		if Enemy:
+			var enemy = Enemy.instance()
+			$AnimatedSprite.frames = enemy.spawn_frames
+			$AnimatedSprite.offset = enemy.sprite_offset
 
 
 func _on_Tween_tween_all_completed() -> void:
 	enemy.position = position
 	if enemy.is_in_group("needs_player"):
 		enemy.set_player(player)
+	anim_sprite.hide()
 	get_parent().add_child(enemy)
-	queue_free()

@@ -3,10 +3,20 @@ extends TileMap
 signal ignore_updated
 signal all_tiles_used
 
+export(Vector2) var topleft := Vector2(17, 8)
+export(Vector2) var bottomright := Vector2(26, 17)
+
 var rng := RandomNumberGenerator.new()
 var ignore := false setget set_ignore
 
 onready var ignore_timer := $IgnoreTimer
+
+
+func repair_tiles() -> void:
+	for i in range(topleft.x, bottomright.x + 1):
+		for j in range(topleft.y, bottomright.y + 1):
+			set_cell(i, j, 0)
+	update_bitmask_region(topleft, bottomright)
 
 
 func remove_rand_amount(amount: int) -> void:
@@ -34,7 +44,7 @@ func set_ignore(val: bool) -> void:
 	ignore = val
 	if val:
 		ignore_timer.start()
-	emit_signal("ignore_updated")
+		emit_signal("ignore_updated")
 
 
 func _remove_rand() -> bool:

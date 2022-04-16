@@ -25,6 +25,11 @@ onready var step_sfx := $StepSFX
 onready var ice_reflection_tween := $IceReflectionTween
 
 
+func _ready() -> void:
+	if face_pos:
+		set_facing()
+
+
 func move_towards_target_pos() -> void:
 	if target_dir == null:
 		return
