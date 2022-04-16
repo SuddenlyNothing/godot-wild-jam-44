@@ -19,6 +19,8 @@ var disabled := false setget set_disabled
 var knockback := Vector2()
 var look_dir := Vector2()
 var is_pick_left := true
+var is_picking := false
+var is_shooting := false
 
 onready var player_states := $PlayerStates
 onready var anim_sprite := $YSort/AnimatedSprite
@@ -62,10 +64,11 @@ func _process(delta: float) -> void:
 	_set_facing()
 	_set_pick_facing(delta)
 	_set_snow_machine_facing(delta)
+	_attack()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	_attack(event)
+	_set_attack_inputs(event)
 
 
 func _physics_process(delta: float) -> void:
@@ -152,12 +155,19 @@ func _apply_friction(delta: float) -> void:
 		knockback -= FRICTION * delta * knockback.normalized()
 
 
-func _attack(event: InputEvent) -> void:
+func _set_attack_inputs(event: InputEvent):
+	if event.is_action("melee"):
+		is_picking = event.is_action_pressed("melee")
+	if event.is_action("shoot"):
+		is_shooting = event.is_action_pressed("shoot")
+
+
+func _attack() -> void:
 	if not (melee_timer.is_stopped() and shoot_timer.is_stopped()):
 		return
-	if event.is_action_pressed("melee"):
+	if is_picking:
 		_melee_attack()
-	elif event.is_action_pressed("shoot"):
+	elif is_shooting:
 		_ice_shot()
 
 

@@ -23,7 +23,6 @@ script = ExtResource( 4 )
 [node name="DrownHandler" parent="." instance=ExtResource( 5 )]
 
 [node name="IceTiles" parent="DrownHandler" instance=ExtResource( 2 )]
-collision_use_parent = true
 
 [node name="YSort" type="YSort" parent="."]
 
