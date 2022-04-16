@@ -254,6 +254,8 @@ one_shot = true
 [node name="Tween" type="Tween" parent="."]
 
 [node name="SoftCollision" parent="." instance=ExtResource( 6 )]
+push_acc = 400
+friction = 800
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SoftCollision"]
 position = Vector2( 0, -2.5 )
