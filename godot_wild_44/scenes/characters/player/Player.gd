@@ -62,7 +62,10 @@ func _process(delta: float) -> void:
 	_set_facing()
 	_set_pick_facing(delta)
 	_set_snow_machine_facing(delta)
-	_attack()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	_attack(event)
 
 
 func _physics_process(delta: float) -> void:
@@ -149,12 +152,12 @@ func _apply_friction(delta: float) -> void:
 		knockback -= FRICTION * delta * knockback.normalized()
 
 
-func _attack() -> void:
+func _attack(event: InputEvent) -> void:
 	if not (melee_timer.is_stopped() and shoot_timer.is_stopped()):
 		return
-	if Input.is_action_pressed("melee"):
+	if event.is_action_pressed("melee"):
 		_melee_attack()
-	elif Input.is_action_pressed("shoot"):
+	elif event.is_action_pressed("shoot"):
 		_ice_shot()
 
 
