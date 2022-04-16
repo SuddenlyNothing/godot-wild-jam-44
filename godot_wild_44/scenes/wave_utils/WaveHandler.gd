@@ -1,4 +1,4 @@
-extends Node
+extends YSort
 
 signal wave_finished
 
