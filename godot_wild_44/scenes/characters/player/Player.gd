@@ -76,6 +76,7 @@ func move() -> void:
 func drown() -> void:
 	if not respawn_timer.is_inside_tree():
 		return
+	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", 3)
 	splash_sfx.play()
 	var splash := Splash.instance()
 	splash.position = position
@@ -93,6 +94,7 @@ func hit(hit_dir: Vector2, hit_strength: int) -> void:
 			1, 0, 0.3)
 	hit_flash_tween.start()
 	knockback = KNOCKBACK_FORCE * hit_strength * hit_dir
+	get_tree().call_group("ice_tiles", "remove_rand_amount", 3)
 
 
 func set_anim(anim_prefix: String) -> void:

@@ -2,8 +2,6 @@ extends EnemyMove
 
 export(int) var hit_scale := 1
 
-var player: Node setget set_player
-
 onready var idle_wait_timer := $IdleWaitTimer
 onready var hitbox := $VisualDependents/Hitbox
 onready var attack_pos := $VisualDependents/AttackPos
@@ -37,10 +35,6 @@ func start_idle_wait_timer() -> void:
 
 func start_retreat_timer() -> void:
 	retreat_timer.start(randf())
-
-
-func set_player(val: Node) -> void:
-	player = val
 
 
 func _on_IdleWaitTimer_timeout() -> void:

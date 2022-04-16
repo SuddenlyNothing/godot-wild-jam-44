@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/environment/Water.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/environment/IceTiles.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scenes/environment/DrownHandler.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/characters/enemies/Penguin.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/characters/enemies/EnemySpawner.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/characters/enemies/Walrus.tscn" type="PackedScene" id=8]
 
 [node name="Demo" type="Node2D"]
 script = ExtResource( 4 )
@@ -27,5 +28,9 @@ position = Vector2( 629, 233 )
 [node name="EnemySpawner" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 851, 132 )
 Enemy = ExtResource( 6 )
+
+[node name="EnemySpawner2" parent="YSort" instance=ExtResource( 7 )]
+position = Vector2( 452, 230 )
+Enemy = ExtResource( 8 )
 
 [connection signal="started_pull" from="YSort/Player" to="DrownHandler/IceTiles" method="_on_Player_started_pull"]

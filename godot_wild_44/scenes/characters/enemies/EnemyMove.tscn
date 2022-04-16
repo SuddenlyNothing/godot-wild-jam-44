@@ -108,7 +108,7 @@ animations = [ {
 extents = Vector2( 18, 5 )
 
 [sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 10, 2 )
+extents = Vector2( 13, 2 )
 
 [sub_resource type="AudioStreamRandomPitch" id=32]
 

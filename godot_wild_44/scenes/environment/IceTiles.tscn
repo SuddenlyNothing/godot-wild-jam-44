@@ -457,3 +457,8 @@ tile_set = SubResource( 1 )
 cell_size = Vector2( 24, 24 )
 format = 1
 script = ExtResource( 2 )
+
+[node name="IgnoreTimer" type="Timer" parent="."]
+wait_time = 0.05
+
+[connection signal="timeout" from="IgnoreTimer" to="." method="_on_IgnoreTimer_timeout"]
