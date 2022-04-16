@@ -60,17 +60,10 @@ func set_slow(val: bool) -> void:
 
 func set_freeze(val: bool) -> void:
 	freeze_texture.visible = val
-	if ice_reflection_tween.is_active():
-		ice_reflection_tween.remove_all()
-		ice_reflection_tween.interpolate_property(freeze_texture, "texture_offset:x",
-				freeze_texture.texture_offset.x, freeze_texture.texture_offset.x + 128, 1,
-				Tween.TRANS_SINE, Tween.EASE_OUT)
-		ice_reflection_tween.start()
-	else:
-		ice_reflection_tween.interpolate_property(freeze_texture, "texture_offset:x",
-				freeze_texture.texture_offset.x, freeze_texture.texture_offset.x + 128, 1,
-				Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-		ice_reflection_tween.start()
+	ice_reflection_tween.interpolate_property(freeze_texture, "texture_offset:x",
+			freeze_texture.texture_offset.x, freeze_texture.texture_offset.x + 128, 1,
+			Tween.TRANS_EXPO, Tween.EASE_OUT)
+	ice_reflection_tween.start()
 	
 	if val:
 		speed = 0

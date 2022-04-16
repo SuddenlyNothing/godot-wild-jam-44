@@ -9,6 +9,7 @@ export(Color) var slow_color := Color("dfeded")
 export(Color) var hurt_color := Color("bf2651")
 
 var freeze := false setget set_freeze
+var player: Node setget set_player
 
 onready var freeze_health: int = max_freeze_health setget set_freeze_health
 onready var freeze_timer := $FreezeTimer
@@ -75,6 +76,10 @@ func die() -> void:
 		frozen_break_sfx.position = position
 		frozen_break_sfx.connect("finished", frozen_break_sfx, "queue_free")
 	queue_free()
+
+
+func set_player(val: Node) -> void:
+	player = val
 
 
 func _flash_hurt() -> void:

@@ -50,7 +50,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="godo wild 44 game"
+config/name="godot wild 44 game"
 run/main_scene="res://scenes/Demo.tscn"
 config/icon="res://icon.png"
 

@@ -41,7 +41,7 @@ func load_data() -> void:
 		var is_bus_mute = AudioServer.is_bus_mute(bus)
 		Save.data.audio_buses[audio_bus_name] = {
 			"default_volume": bus_volume,
-			"default_muted": is_bus_mute,
+			"default_muted": false,
 			"volume": bus_volume,
 			"muted": is_bus_mute,
 		}

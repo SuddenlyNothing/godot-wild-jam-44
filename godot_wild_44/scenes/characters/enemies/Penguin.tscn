@@ -1,0 +1,202 @@
+[gd_scene load_steps=26 format=2]
+
+[ext_resource path="res://scenes/characters/enemies/EnemyBase.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/characters/penguin/penguin_idle.png" type="Texture" id=2]
+[ext_resource path="res://assets/characters/penguin/penguin_attack.png" type="Texture" id=3]
+[ext_resource path="res://scenes/characters/enemies/Penguin.gd" type="Script" id=4]
+[ext_resource path="res://assets/characters/FreezeTexture.png" type="Texture" id=5]
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=21]
+animations = [ {
+"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 hit_color : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float hit_strength : hint_range(0.0,1.0) = 0.0;
+
+void fragment() {
+	vec4 custom_color = texture(TEXTURE, UV);
+	custom_color.rgb = mix(custom_color.rgb, hit_color.rgb, hit_strength);
+	COLOR = custom_color;
+}"
+
+[sub_resource type="ShaderMaterial" id=15]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/hit_color = Color( 0.74902, 0.14902, 0.317647, 1 )
+shader_param/hit_strength = 0.0
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 3 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 3 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 3 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 3 )
+region = Rect2( 320, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 3 )
+region = Rect2( 384, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=16]
+animations = [ {
+"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
+"loop": false,
+"name": "attack",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": true,
+"name": "idle",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=14]
+
+[node name="Penguin" groups=["needs_player"] instance=ExtResource( 1 )]
+motion/sync_to_physics = true
+script = ExtResource( 4 )
+spawn_frames = SubResource( 21 )
+sprite_offset = Vector2( 0, -7 )
+
+[node name="VisualDependents" parent="." index="0"]
+material = SubResource( 15 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisualDependents/Hurtbox" index="0"]
+polygon = PoolVector2Array( -12, 22, -18, 16, -19, -5, -12, -12, 12, -10, 23, 2, 16, 20 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="VisualDependents" index="1"]
+use_parent_material = true
+frames = SubResource( 16 )
+animation = "idle"
+frame = 1
+playing = true
+offset = Vector2( 0, -7 )
+
+[node name="FreezeTexture" type="Polygon2D" parent="VisualDependents" index="2"]
+visible = false
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( -18, -16, -25, -4, -19, 24, 1, 24, 21, 21, 26, -6, 8, -18 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource( 14 )
+
+[node name="EnterExitTween" type="Tween" parent="." index="7"]
+
+[node name="BattleTimer" type="Timer" parent="." index="8"]
+wait_time = 60.0
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="." index="9"]
+wait_time = 7.0
+
+[node name="AttackDelayTimer" type="Timer" parent="." index="10"]
+wait_time = 0.1
+one_shot = true
+
+[node name="AttackPos1" type="Position2D" parent="." index="11"]
+position = Vector2( -128, 0 )
+
+[node name="AttackPos2" type="Position2D" parent="." index="12"]
+position = Vector2( -104, 0 )
+
+[node name="AttackPos3" type="Position2D" parent="." index="13"]
+position = Vector2( -80, 0 )
+
+[node name="AttackPos4" type="Position2D" parent="." index="14"]
+position = Vector2( -56, 0 )
+
+[node name="AttackPos5" type="Position2D" parent="." index="15"]
+position = Vector2( -32, 0 )
+
+[node name="AttackPos6" type="Position2D" parent="." index="16"]
+position = Vector2( -16, -16 )
+
+[node name="AttackPos7" type="Position2D" parent="." index="17"]
+position = Vector2( 16, -16 )
+
+[node name="AttackPos8" type="Position2D" parent="." index="18"]
+position = Vector2( 32, 0 )
+
+[node name="AttackPos9" type="Position2D" parent="." index="19"]
+position = Vector2( 16, 24 )
+
+[node name="AttackPos10" type="Position2D" parent="." index="20"]
+position = Vector2( -16, 24 )
+
+[node name="AttackPos11" type="Position2D" parent="." index="21"]
+position = Vector2( 56, 0 )
+
+[node name="AttackPos12" type="Position2D" parent="." index="22"]
+position = Vector2( 80, 0 )
+
+[node name="AttackPos13" type="Position2D" parent="." index="23"]
+position = Vector2( 104, 0 )
+
+[node name="AttackPos14" type="Position2D" parent="." index="24"]
+position = Vector2( 128, 0 )
+
+[node name="IceReflectionTween" type="Tween" parent="." index="25"]
+
+[connection signal="animation_finished" from="VisualDependents/AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="tween_all_completed" from="EnterExitTween" to="." method="_on_EnterExitTween_tween_all_completed"]
+[connection signal="timeout" from="BattleTimer" to="." method="_on_BattleTimer_timeout"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
+[connection signal="timeout" from="AttackDelayTimer" to="." method="_on_AttackDelayTimer_timeout"]
