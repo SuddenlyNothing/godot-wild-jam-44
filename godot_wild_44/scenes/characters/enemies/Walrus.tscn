@@ -47,6 +47,9 @@ shape = SubResource( 1 )
 [node name="AttackPos" type="Position2D" parent="VisualDependents" index="4"]
 position = Vector2( 22, -1 )
 
+[node name="FreezeTexture" parent="VisualDependents" index="5"]
+polygon = PoolVector2Array( 0, 6, -4, 1, -25, 0, -25, -8, -12, -16, -1, -23, 10, -24, 25, -13, 20, -3, 6, 7 )
+
 [node name="IdleWaitTimer" type="Timer" parent="." index="6"]
 one_shot = true
 

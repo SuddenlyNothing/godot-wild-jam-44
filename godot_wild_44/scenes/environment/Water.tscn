@@ -14,8 +14,10 @@ material = ExtResource( 7 )
 
 [node name="32x32" type="TextureRect" parent="Water"]
 use_parent_material = true
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 1536.0
+margin_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource( 4 )
 expand = true
@@ -24,8 +26,10 @@ stretch_mode = 2
 [node name="64x64" type="TextureRect" parent="Water"]
 modulate = Color( 1, 1, 1, 0.5 )
 use_parent_material = true
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 1536.0
+margin_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource( 1 )
 expand = true
@@ -34,8 +38,10 @@ stretch_mode = 2
 [node name="128x128" type="TextureRect" parent="Water"]
 modulate = Color( 1, 1, 1, 0.392157 )
 use_parent_material = true
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 1536.0
+margin_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource( 2 )
 expand = true
@@ -44,8 +50,10 @@ stretch_mode = 2
 [node name="128x128_2" type="TextureRect" parent="Water"]
 modulate = Color( 1, 1, 1, 0.196078 )
 use_parent_material = true
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 1536.0
+margin_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true
@@ -54,8 +62,10 @@ stretch_mode = 2
 [node name="128x128_3" type="TextureRect" parent="Water"]
 modulate = Color( 1, 1, 1, 0.392157 )
 use_parent_material = true
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 1536.0
+margin_bottom = 900.0
 mouse_filter = 2
 texture = ExtResource( 5 )
 expand = true
