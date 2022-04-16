@@ -22,6 +22,7 @@ onready var soft_collision := $VisualDependents/SoftCollision
 onready var freeze_texture := $VisualDependents/FreezeTexture
 onready var soft_collision_collision := $VisualDependents/SoftCollision/CollisionShape2D
 onready var step_sfx := $StepSFX
+onready var ice_reflection_tween := $IceReflectionTween
 
 
 func move_towards_target_pos() -> void:
@@ -59,7 +60,11 @@ func set_slow(val: bool) -> void:
 
 func set_freeze(val: bool) -> void:
 	freeze_texture.visible = val
-	soft_collision_collision.call_deferred("set_disabled", val)
+	if not ice_reflection_tween.is_active():
+		ice_reflection_tween.interpolate_property(freeze_texture, "texture_offset:x",
+				freeze_texture.texture_offset.x, freeze_texture.texture_offset.x + 128, 1,
+				Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+		ice_reflection_tween.start()
 	if val:
 		speed = 0
 		anim_sprite.speed_scale = 0

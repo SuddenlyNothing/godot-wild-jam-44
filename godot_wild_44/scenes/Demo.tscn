@@ -29,11 +29,11 @@ position = Vector2( 469, 281 )
 Enemy = ExtResource( 6 )
 
 [node name="EnemySpawner2" parent="YSort" instance=ExtResource( 7 )]
-position = Vector2( 607, 360 )
+position = Vector2( 444, 316 )
 Enemy = ExtResource( 6 )
 
 [node name="EnemySpawner3" parent="YSort" instance=ExtResource( 7 )]
-position = Vector2( 483, 379 )
+position = Vector2( 504, 264 )
 Enemy = ExtResource( 6 )
 
 [connection signal="started_pull" from="YSort/Player" to="DrownHandler/IceTiles" method="_on_Player_started_pull"]

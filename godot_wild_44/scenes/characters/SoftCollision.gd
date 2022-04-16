@@ -1,7 +1,7 @@
 extends Area2D
 
-export(int) var push_acc := 200
-export(int) var friction := 500
+export(int) var push_acc := 800
+export(int) var friction := 400
 var push_vel := Vector2()
 var collide_area : Area2D
 
