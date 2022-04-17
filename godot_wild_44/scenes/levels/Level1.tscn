@@ -13,7 +13,7 @@ next_scene = "res://scenes/levels/Level1.tscn"
 [node name="WaveHandler" parent="YSort/WaveParent" index="0" instance=ExtResource( 2 )]
 
 [node name="PenguinSpawner" parent="YSort/WaveParent/WaveHandler" index="1" instance=ExtResource( 5 )]
-position = Vector2( 729, 104 )
+position = Vector2( 532, 104 )
 
 [node name="WaveHandler3" parent="YSort/WaveParent" index="1" instance=ExtResource( 2 )]
 

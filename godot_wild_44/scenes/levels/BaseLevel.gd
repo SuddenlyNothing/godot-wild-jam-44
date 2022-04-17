@@ -8,6 +8,7 @@ export(String, FILE, "*.tscn") var next_scene
 
 var wave := 0
 var events_state: GDScriptFunctionState
+var previous_event
 
 onready var event_delay_timer := $EventDelayTimer
 onready var player := $YSort/Player
@@ -23,7 +24,10 @@ func events() -> void:
 		if time_delay.size() > i:
 			event_delay_timer.start(time_delay[i])
 			yield()
+		if previous_event != null:
+			exit_event(previous_event)
 		enter_event(i)
+		previous_event = i
 		var event = events[i]
 		if event.empty():
 			wave_parent.get_child(wave).spawn()
@@ -38,6 +42,10 @@ func events() -> void:
 
 # Override for customizable options
 func enter_event(n: int) -> void:
+	pass
+
+
+func exit_event(n: int) -> void:
 	pass
 
 

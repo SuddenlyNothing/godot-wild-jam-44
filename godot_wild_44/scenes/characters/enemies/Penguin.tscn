@@ -1,10 +1,17 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://scenes/characters/enemies/EnemyBase.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/characters/penguin/penguin_idle.png" type="Texture" id=2]
 [ext_resource path="res://assets/characters/penguin/penguin_attack.png" type="Texture" id=3]
 [ext_resource path="res://scenes/characters/enemies/Penguin.gd" type="Script" id=4]
 [ext_resource path="res://assets/characters/FreezeTexture.png" type="Texture" id=5]
+[ext_resource path="res://utils/MultiAudio2D.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/sfx/penguin_rally_3.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/sfx/penguin_rally_1.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/sfx/penguin_rally_2.wav" type="AudioStream" id=9]
+[ext_resource path="res://assets/sfx/boat_cannon.wav" type="AudioStream" id=10]
+[ext_resource path="res://assets/sfx/water_emerge.wav" type="AudioStream" id=11]
+[ext_resource path="res://assets/characters/penguin/penguin_ammo.png" type="Texture" id=12]
 
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 2 )
@@ -107,11 +114,50 @@ animations = [ {
 
 [sub_resource type="RectangleShape2D" id=14]
 
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 12 )
+region = Rect2( 0, 0, 32, 15 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 12 )
+region = Rect2( 32, 0, 32, 15 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 12 )
+region = Rect2( 64, 0, 32, 15 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 12 )
+region = Rect2( 96, 0, 32, 15 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 12 )
+region = Rect2( 128, 0, 32, 15 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 12 )
+region = Rect2( 160, 0, 32, 15 )
+
+[sub_resource type="SpriteFrames" id=30]
+animations = [ {
+"frames": [ null, SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
+"loop": false,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="AudioStreamRandomPitch" id=22]
+
+[sub_resource type="AudioStreamRandomPitch" id=23]
+audio_stream = ExtResource( 10 )
+
 [node name="Penguin" groups=["needs_player"] instance=ExtResource( 1 )]
 motion/sync_to_physics = true
 script = ExtResource( 4 )
 spawn_frames = SubResource( 21 )
 sprite_offset = Vector2( 0, -7 )
+health = 15
+max_freeze_health = 215
 
 [node name="VisualDependents" parent="." index="0"]
 material = SubResource( 15 )
@@ -123,7 +169,7 @@ polygon = PoolVector2Array( -12, 22, -18, 16, -19, -5, -12, -12, 12, -10, 23, 2,
 use_parent_material = true
 frames = SubResource( 16 )
 animation = "idle"
-frame = 3
+frame = 2
 playing = true
 offset = Vector2( 0, -7 )
 
@@ -154,46 +200,143 @@ one_shot = true
 [node name="AttackPos1" type="Position2D" parent="." index="11"]
 position = Vector2( -128, 0 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos1" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="AttackPos2" type="Position2D" parent="." index="12"]
 position = Vector2( -104, 0 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos2" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
 
 [node name="AttackPos3" type="Position2D" parent="." index="13"]
 position = Vector2( -80, 0 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos3" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="AttackPos4" type="Position2D" parent="." index="14"]
 position = Vector2( -56, 0 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos4" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
 
 [node name="AttackPos5" type="Position2D" parent="." index="15"]
 position = Vector2( -32, 0 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos5" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="AttackPos6" type="Position2D" parent="." index="16"]
 position = Vector2( -16, -16 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos6" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
 
 [node name="AttackPos7" type="Position2D" parent="." index="17"]
 position = Vector2( 16, -16 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos7" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="AttackPos8" type="Position2D" parent="." index="18"]
 position = Vector2( 32, 0 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos8" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="AttackPos9" type="Position2D" parent="." index="19"]
-position = Vector2( 16, 24 )
+position = Vector2( 16, 34 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos9" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
 
 [node name="AttackPos10" type="Position2D" parent="." index="20"]
-position = Vector2( -16, 24 )
+position = Vector2( -16, 34 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos10" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
 
 [node name="AttackPos11" type="Position2D" parent="." index="21"]
 position = Vector2( 56, 0 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos11" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="AttackPos12" type="Position2D" parent="." index="22"]
 position = Vector2( 80, 0 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos12" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
 
 [node name="AttackPos13" type="Position2D" parent="." index="23"]
 position = Vector2( 104, 0 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos13" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="AttackPos14" type="Position2D" parent="." index="24"]
 position = Vector2( 128, 0 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AttackPos14" index="0"]
+show_behind_parent = true
+position = Vector2( 0, -7.5 )
+z_index = -1
+frames = SubResource( 30 )
+
 [node name="IceReflectionTween" type="Tween" parent="." index="25"]
+
+[node name="AttackSFX" parent="." index="29" instance=ExtResource( 6 )]
+stream = SubResource( 22 )
+volume_db = 15.0
+pitch_scale = 0.6
+audio = [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 7 ) ]
+
+[node name="CannonSFX" type="AudioStreamPlayer2D" parent="." index="30"]
+stream = SubResource( 23 )
+
+[node name="EmergeSFX" type="AudioStreamPlayer2D" parent="." index="31"]
+stream = ExtResource( 11 )
+bus = "SFX"
 
 [connection signal="animation_finished" from="VisualDependents/AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="tween_all_completed" from="EnterExitTween" to="." method="_on_EnterExitTween_tween_all_completed"]
