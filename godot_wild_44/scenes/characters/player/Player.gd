@@ -3,7 +3,7 @@ extends KinematicBody2D
 signal started_pull
 
 const IceShot := preload("res://scenes/characters/player/IceShot.tscn")
-const Splash := preload("res://scenes/environment/Splash.tscn")
+const SplashParticles := preload("res://scenes/characters/SplashParticles.tscn")
 
 const MAX_SPEED := 100
 const REACH := 12
@@ -21,6 +21,7 @@ var look_dir := Vector2()
 var is_pick_left := true
 var is_picking := false
 var is_shooting := false
+var drowned := false
 
 onready var player_states := $PlayerStates
 onready var anim_sprite := $YSort/AnimatedSprite
@@ -35,12 +36,13 @@ onready var soft_collision := $SoftCollision
 onready var step_sfx := $StepSFX
 onready var pick_swing_sfx := $PickSwingSFX
 onready var ice_shot_sfx := $IceShotSFX
-onready var splash_sfx := $SplashSFX
 onready var emerge_sfx := $EmergeSFX
 onready var pick := $YSort/Pick
 onready var swing_tween := $SwingTween
 onready var snow_machine := $YSort/SnowMachine
 onready var snow_machine_tween := $SnowMachineTween
+onready var death_sfx := $DeathSFX
+onready var hurt_sfx := $HurtSFX
 
 onready var body_collision := $CollisionShape2D
 onready var hitbox_collision := $Hitbox/CollisionShape2D
@@ -82,11 +84,14 @@ func move() -> void:
 func drown() -> void:
 	if not respawn_timer.is_inside_tree():
 		return
-	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", 300)
-	splash_sfx.play()
-	var splash := Splash.instance()
-	splash.position = position
-	get_parent().add_child(splash)
+	if drowned:
+		return
+	drowned = true
+	death_sfx.play()
+	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", 3)
+	var splash_particles := SplashParticles.instance()
+	splash_particles.position = position
+	get_parent().add_child(splash_particles)
 	player_states.call_deferred("set_state", "death")
 	var ice_tiles := get_tree().get_nodes_in_group("ice_tiles")
 	if not ice_tiles.empty() and ice_tiles[0].get_used_cells().size() > 0:
@@ -102,6 +107,7 @@ func hit(hit_dir: Vector2, hit_strength: int) -> void:
 			1, 0, 0.3)
 	hit_flash_tween.start()
 	knockback = KNOCKBACK_FORCE * hit_strength * hit_dir
+	hurt_sfx.play()
 	get_tree().call_group("ice_tiles", "remove_rand_amount", 3)
 
 
@@ -264,6 +270,7 @@ func _on_Hitbox_area_exited(area: Area2D) -> void:
 
 
 func _on_RespawnTimer_timeout() -> void:
+	drowned = false
 	emerge_sfx.play()
 	player_states.call_deferred("set_state", "idle")
 

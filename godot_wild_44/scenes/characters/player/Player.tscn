@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://scenes/characters/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/player/PlayerStates.gd" type="Script" id=2]
@@ -13,10 +13,12 @@
 [ext_resource path="res://assets/sfx/pick_swing_2.wav" type="AudioStream" id=11]
 [ext_resource path="res://assets/sfx/pick_swing_1.wav" type="AudioStream" id=12]
 [ext_resource path="res://assets/sfx/iceball throw.wav" type="AudioStream" id=13]
-[ext_resource path="res://assets/sfx/water_splash.wav" type="AudioStream" id=14]
+[ext_resource path="res://assets/sfx/player_die.wav" type="AudioStream" id=14]
 [ext_resource path="res://assets/sfx/water_emerge.wav" type="AudioStream" id=15]
 [ext_resource path="res://assets/characters/player/Icepick1.png" type="Texture" id=16]
 [ext_resource path="res://assets/characters/player/snow_machine.png" type="Texture" id=17]
+[ext_resource path="res://assets/sfx/player_hit_3.wav" type="AudioStream" id=18]
+[ext_resource path="res://assets/sfx/player_hit_2.wav" type="AudioStream" id=19]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -35,8 +37,36 @@ shader = SubResource( 1 )
 shader_param/hit_color = Color( 0.74902, 0.14902, 0.317647, 1 )
 shader_param/hit_strength = 0.0
 
-[sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 5 )
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 3 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 3 )
+region = Rect2( 96, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 3 )
+region = Rect2( 128, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 160, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 3 )
+region = Rect2( 192, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 3 )
+region = Rect2( 224, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=20]
@@ -71,36 +101,8 @@ region = Rect2( 224, 0, 32, 32 )
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 3 )
-region = Rect2( 32, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 3 )
-region = Rect2( 64, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 3 )
-region = Rect2( 96, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 3 )
-region = Rect2( 128, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 3 )
-region = Rect2( 160, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 3 )
-region = Rect2( 192, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 3 )
-region = Rect2( 224, 0, 32, 32 )
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 3 )
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=12]
@@ -135,34 +137,24 @@ region = Rect2( 224, 0, 32, 32 )
 atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 4 )
-region = Rect2( 0, 0, 32, 32 )
-
 [sub_resource type="AtlasTexture" id=28]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 32, 32 )
 
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 32, 32 )
+
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ SubResource( 27 ) ],
-"loop": false,
-"name": "idle_up",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 19 ) ],
-"loop": true,
-"name": "walk_up",
-"speed": 10.0
-}, {
 "frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 3 ) ],
 "loop": true,
 "name": "walk_right",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 11 ) ],
+"frames": [ SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 19 ) ],
 "loop": true,
-"name": "walk_down",
+"name": "walk_up",
 "speed": 10.0
 }, {
 "frames": [ SubResource( 29 ) ],
@@ -170,9 +162,19 @@ animations = [ {
 "name": "idle_down",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 11 ) ],
+"loop": true,
+"name": "walk_down",
+"speed": 10.0
+}, {
 "frames": [ SubResource( 28 ) ],
 "loop": false,
 "name": "idle_right",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 27 ) ],
+"loop": false,
+"name": "idle_up",
 "speed": 5.0
 } ]
 
@@ -193,7 +195,6 @@ extents = Vector2( 7.5, 4.5 )
 audio_stream = ExtResource( 13 )
 
 [sub_resource type="AudioStreamRandomPitch" id=37]
-audio_stream = ExtResource( 14 )
 
 [node name="Player" type="KinematicBody2D" groups=["drownable", "player"]]
 collision_layer = 0
@@ -237,6 +238,7 @@ shape = SubResource( 33 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+zoom = Vector2( 0.5, 0.5 )
 
 [node name="MeleeTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -247,7 +249,6 @@ wait_time = 0.4
 one_shot = true
 
 [node name="RespawnTimer" type="Timer" parent="."]
-wait_time = 2.0
 one_shot = true
 
 [node name="Tween" type="Tween" parent="."]
@@ -274,10 +275,6 @@ audio = [ ExtResource( 12 ), ExtResource( 11 ) ]
 stream = SubResource( 36 )
 bus = "SFX"
 
-[node name="SplashSFX" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 37 )
-bus = "SFX"
-
 [node name="EmergeSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
 bus = "SFX"
@@ -285,6 +282,14 @@ bus = "SFX"
 [node name="SwingTween" type="Tween" parent="."]
 
 [node name="SnowMachineTween" type="Tween" parent="."]
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+bus = "SFX"
+
+[node name="HurtSFX" parent="." instance=ExtResource( 7 )]
+stream = SubResource( 37 )
+audio = [ ExtResource( 19 ), ExtResource( 18 ) ]
 
 [connection signal="frame_changed" from="YSort/AnimatedSprite" to="." method="_on_AnimatedSprite_frame_changed"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]

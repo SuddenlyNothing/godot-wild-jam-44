@@ -13,6 +13,7 @@ onready var ignore_timer := $IgnoreTimer
 
 
 func repair_tiles() -> void:
+	set_ignore(true)
 	for i in range(topleft.x, bottomright.x + 1):
 		for j in range(topleft.y, bottomright.y + 1):
 			set_cell(i, j, 0)

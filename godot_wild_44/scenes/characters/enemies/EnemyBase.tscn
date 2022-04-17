@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/characters/enemies/EnemyBase.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/enemies/EnemyHurtbox.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://utils/MultiAudio2D.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/sfx/iceball_freeze.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/characters/walrus/attack.png" type="Texture" id=7]
+[ext_resource path="res://assets/sfx/ice_hit.wav" type="AudioStream" id=8]
 
 [sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 7 )
@@ -40,6 +41,9 @@ shader_param/hit_strength = 0.0
 
 [sub_resource type="AudioStreamRandomPitch" id=3]
 
+[sub_resource type="AudioStreamRandomPitch" id=6]
+audio_stream = ExtResource( 8 )
+
 [node name="EnemyBase" type="KinematicBody2D" groups=["drownable", "enemy"]]
 script = ExtResource( 1 )
 spawn_frames = SubResource( 4 )
@@ -50,6 +54,8 @@ material = SubResource( 2 )
 
 [node name="Hurtbox" type="Area2D" parent="VisualDependents" groups=["enemy"]]
 script = ExtResource( 2 )
+
+[node name="ParticlePosition" type="Position2D" parent="VisualDependents"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
@@ -68,6 +74,17 @@ audio = [ ExtResource( 4 ), ExtResource( 3 ) ]
 
 [node name="FreezeSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 6 )
+bus = "SFX"
+
+[node name="HurtSFX" type="AudioStreamPlayer2D" parent="."]
+bus = "SFX"
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="."]
+bus = "SFX"
+
+[node name="IceHitSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 6 )
+volume_db = 5.0
 bus = "SFX"
 
 [connection signal="hit" from="VisualDependents/Hurtbox" to="." method="_on_Hurtbox_hit"]

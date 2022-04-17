@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/characters/enemies/EnemyMove.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/characters/enemies/Walrus.gd" type="Script" id=2]
 [ext_resource path="res://scenes/characters/enemies/WalrusMoveStates.gd" type="Script" id=3]
+[ext_resource path="res://assets/sfx/walrus_hit.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/sfx/walrus_die.wav" type="AudioStream" id=5]
 
 [sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;
@@ -25,7 +27,13 @@ shader_param/hit_strength = 0.0
 [sub_resource type="CircleShape2D" id=1]
 radius = 13.0
 
-[node name="Walrus" groups=["needs_player"] instance=ExtResource( 1 )]
+[sub_resource type="AudioStreamRandomPitch" id=5]
+audio_stream = ExtResource( 4 )
+
+[sub_resource type="AudioStreamRandomPitch" id=4]
+audio_stream = ExtResource( 5 )
+
+[node name="Walrus" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 after_attack_state = "retreat"
 
@@ -50,11 +58,20 @@ position = Vector2( 22, -1 )
 [node name="FreezeTexture" parent="VisualDependents" index="5"]
 polygon = PoolVector2Array( 0, 6, -4, 1, -25, 0, -25, -8, -12, -16, -1, -23, 10, -24, 25, -13, 20, -3, 6, 7 )
 
+[node name="ParticlePosition" parent="VisualDependents" index="6"]
+position = Vector2( 6, -6 )
+
 [node name="IdleWaitTimer" type="Timer" parent="." index="6"]
 one_shot = true
 
 [node name="RetreatTimer" type="Timer" parent="." index="7"]
 one_shot = true
+
+[node name="HurtSFX" parent="." index="12"]
+stream = SubResource( 5 )
+
+[node name="DeathSFX" parent="." index="13"]
+stream = SubResource( 4 )
 
 [connection signal="body_entered" from="VisualDependents/Hitbox" to="." method="_on_Hitbox_body_entered"]
 [connection signal="timeout" from="IdleWaitTimer" to="." method="_on_IdleWaitTimer_timeout"]

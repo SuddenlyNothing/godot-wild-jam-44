@@ -2,11 +2,14 @@ class_name BaseLevel
 extends Node2D
 
 export(Array, Array, String, MULTILINE) var events := []
+export(Array, Color, RGB) var text_color
+export(Array, float) var time_delay
 export(String, FILE, "*.tscn") var next_scene
 
 var wave := 0
 var events_state: GDScriptFunctionState
 
+onready var event_delay_timer := $EventDelayTimer
 onready var player := $YSort/Player
 onready var start_pos: Vector2 = player.position
 onready var dialog_player := $CL/DialogPlayer
@@ -16,13 +19,26 @@ onready var wave_parent := $YSort/WaveParent
 
 
 func events() -> void:
-	for i in events:
-		if i.empty():
+	for i in events.size():
+		if time_delay.size() > i:
+			event_delay_timer.start(time_delay[i])
+			yield()
+		enter_event(i)
+		var event = events[i]
+		if event.empty():
 			wave_parent.get_child(wave).spawn()
 		else:
-			dialog_player.read(i)
+			if text_color.size() > i:
+				dialog_player.read(event, text_color[i])
+			else:
+				dialog_player.read(event)
 		yield()
 	SceneHandler.goto_scene(next_scene)
+
+
+# Override for customizable options
+func enter_event(n: int) -> void:
+	pass
 
 
 func _ready() -> void:
@@ -55,6 +71,8 @@ func _on_LoseScreen_restart_pressed() -> void:
 
 # Shows lose menu
 func _on_IceTiles_all_tiles_used() -> void:
+	if wave >= wave_parent.get_child_count():
+		return
 	wave_parent.get_child(wave).clear_enemies()
 	lose_screen.enter()
 
@@ -66,4 +84,10 @@ func _on_DialogPlayer_dialog_finished() -> void:
 
 # Starts next event
 func _on_WaveHandler_wave_finished() -> void:
+	wave += 1
+	ice_tiles.repair_tiles()
+	events_state = events_state.resume()
+
+
+func _on_EventDelayTimer_timeout() -> void:
 	events_state = events_state.resume()

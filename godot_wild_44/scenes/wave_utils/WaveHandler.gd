@@ -18,6 +18,7 @@ func clear_enemies() -> void:
 	for child in get_children():
 		if child.is_in_group("enemy_spawner"):
 			child.clear_enemy()
+	spawn_delay.stop()
 
 
 func spawn() -> void:
@@ -27,7 +28,10 @@ func spawn() -> void:
 
 
 func _on_SpawnDelay_timeout() -> void:
-	get_child(child_ind).spawn()
+	var child = get_child(child_ind)
+	if not child is EnemySpawner:
+		return
+	child.spawn()
 	child_ind += 1
 	if child_ind < get_child_count():
 		spawn_delay.start()

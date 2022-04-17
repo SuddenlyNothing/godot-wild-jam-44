@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/characters/enemies/EnemyMoveStates.gd"
 }, {
+"base": "Node2D",
+"class": "EnemySpawner",
+"language": "GDScript",
+"path": "res://scenes/characters/enemies/EnemySpawner.gd"
+}, {
 "base": "Node",
 "class": "StateMachine",
 "language": "GDScript",
@@ -51,13 +56,14 @@ _global_script_class_icons={
 "EnemyBase": "",
 "EnemyMove": "",
 "EnemyMoveStates": "",
+"EnemySpawner": "",
 "StateMachine": ""
 }
 
 [application]
 
 config/name="godot wild 44 game"
-run/main_scene="res://scenes/Demo.tscn"
+run/main_scene="res://scenes/levels/Level1.tscn"
 config/icon="res://icon.png"
 
 [autoload]

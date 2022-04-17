@@ -3,6 +3,11 @@ extends KinematicBody2D
 
 signal died
 
+const DeathParticles := preload("res://scenes/characters/enemies/DeathParticles.tscn")
+const IceDeathParticles := preload("res://scenes/characters/enemies/" +\
+		"IceDeathParticles.tscn")
+const SplashParticles := preload("res://scenes/characters/SplashParticles.tscn")
+
 export(SpriteFrames) var spawn_frames
 export(Vector2) var sprite_offset
 export(int) var health: int = 3 setget set_health
@@ -20,6 +25,10 @@ onready var visual_dependents := $VisualDependents
 onready var t := $Tween
 onready var frozen_break_sfx := $FrozenBreakSFX
 onready var freeze_sfx := $FreezeSFX
+onready var particle_position := $VisualDependents/ParticlePosition
+onready var hurt_sfx := $HurtSFX
+onready var death_sfx := $DeathSFX
+onready var ice_hit_sfx := $IceHitSFX
 
 
 func set_freeze_health(val: int) -> void:
@@ -34,8 +43,10 @@ func set_freeze_health(val: int) -> void:
 
 
 func set_health(val: int, hit_dir: Vector2 = Vector2()) -> void:
-	if is_inside_tree() and val < health:
-		get_hit(hit_dir)
+	health = val
+	if not (is_inside_tree() or val < health):
+		return
+	get_hit(hit_dir)
 	if val <= 0:
 		if freeze:
 			remove_child(frozen_break_sfx)
@@ -43,8 +54,23 @@ func set_health(val: int, hit_dir: Vector2 = Vector2()) -> void:
 			frozen_break_sfx.position = position
 			frozen_break_sfx.connect("finished", frozen_break_sfx, "queue_free")
 			frozen_break_sfx.play()
+			var ice_death_particles := IceDeathParticles.instance()
+			ice_death_particles.position = particle_position.global_position
+			get_parent().add_child(ice_death_particles)
+		else:
+			var death_particles := DeathParticles.instance()
+			death_particles.position = particle_position.global_position
+			get_parent().add_child(death_particles)
+		death_sfx.play()
+		death_sfx.position = position
+		remove_child(death_sfx)
+		get_parent().add_child(death_sfx)
+		death_sfx.connect("finished", death_sfx, "queue_free")
 		die()
-	health = val
+	else:
+		if freeze:
+			ice_hit_sfx.play()
+		hurt_sfx.play()
 
 
 func get_hit(hit_dir: Vector2) -> void:
@@ -52,6 +78,10 @@ func get_hit(hit_dir: Vector2) -> void:
 
 
 func drown() -> void:
+	if not is_queued_for_deletion():
+		var splash_particles := SplashParticles.instance()
+		splash_particles.position = position
+		get_parent().add_child(splash_particles)
 	die()
 
 

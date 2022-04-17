@@ -5,6 +5,7 @@ signal dialog_finished
 const READ_SPEED : float = 30.0
 
 export(AudioStream) var default_audio
+export(Color) var default_color = Color("c6dbde")
 
 var dialogs : Array
 var d_ind : int
@@ -17,14 +18,16 @@ onready var label := $M/ColorRect/M/Label
 onready var text_sfx := $TextSFX
 
 
-func read(d: Array, sfx: AudioStream = default_audio) -> void:
+func read(d: Array, color: Color = default_color, sfx: AudioStream = default_audio) -> void:
 	if d.empty():
 		d = ["..."]
 	if not sfx:
 		sfx = default_audio
+	label.modulate = color
 	text_sfx.stream = sfx
+	label.percent_visible = 0
 	has_dialog = true
-	show()
+	call_deferred("show")
 	d_ind = -1
 	dialogs = d
 	read_next()
@@ -35,6 +38,7 @@ func read_next() -> void:
 	if d_ind >= dialogs.size():
 		has_dialog = false
 		emit_signal("dialog_finished")
+		text_sfx.stop()
 		hide()
 		return
 	text_sfx.play()
@@ -50,18 +54,20 @@ func update_keys():
 	label.text = curr_text.format(Variables.input_format)
 
 
-func _input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if has_dialog:
 		if event is InputEventMouseButton:
-			if event.is_pressed():
-				if reading:
-					t.remove_all()
-					label.percent_visible = 1.0
-					reading = false
-					text_sfx.stop()
-				else:
-					read_next()
-				accept_event()
+			if not event.is_pressed():
+				match event.button_index:
+					1, 2:
+						if reading:
+							t.remove_all()
+							label.percent_visible = 1.0
+							reading = false
+							text_sfx.stop()
+						else:
+							read_next()
+						accept_event()
 
 
 func _on_Tween_tween_all_completed() -> void:

@@ -11,6 +11,9 @@
 [node name="BaseLevel" type="Node2D"]
 script = ExtResource( 6 )
 
+[node name="EventDelayTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="Water" parent="." instance=ExtResource( 2 )]
 
 [node name="DrownHandler" parent="." instance=ExtResource( 3 )]
@@ -30,6 +33,7 @@ position = Vector2( 528, 312 )
 
 [node name="LoseScreen" parent="CL" instance=ExtResource( 7 )]
 
+[connection signal="timeout" from="EventDelayTimer" to="." method="_on_EventDelayTimer_timeout"]
 [connection signal="all_tiles_used" from="DrownHandler/IceTiles" to="." method="_on_IceTiles_all_tiles_used"]
 [connection signal="dialog_finished" from="CL/DialogPlayer" to="." method="_on_DialogPlayer_dialog_finished"]
 [connection signal="restart_pressed" from="CL/LoseScreen" to="." method="_on_LoseScreen_restart_pressed"]
