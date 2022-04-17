@@ -82,17 +82,19 @@ func move() -> void:
 func drown() -> void:
 	if not respawn_timer.is_inside_tree():
 		return
-	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", 3)
+	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", 300)
 	splash_sfx.play()
 	var splash := Splash.instance()
 	splash.position = position
 	get_parent().add_child(splash)
 	player_states.call_deferred("set_state", "death")
-	respawn_timer.start()
-	t.interpolate_property(self, "position", position,
-			get_tree().get_nodes_in_group("ice_tiles")[0].get_nearest_valid_pos(position),
-			respawn_timer.wait_time, Tween.TRANS_EXPO, Tween.EASE_IN)
-	t.start()
+	var ice_tiles := get_tree().get_nodes_in_group("ice_tiles")
+	if not ice_tiles.empty() and ice_tiles[0].get_used_cells().size() > 0:
+		respawn_timer.start()
+		t.interpolate_property(self, "position", position,
+				get_tree().get_nodes_in_group("ice_tiles")[0].get_nearest_valid_pos(position),
+				respawn_timer.wait_time, Tween.TRANS_EXPO, Tween.EASE_IN)
+		t.start()
 
 
 func hit(hit_dir: Vector2, hit_strength: int) -> void:
@@ -126,6 +128,10 @@ func set_anim(anim_prefix: String) -> void:
 	play_anim(anim_prefix + "_" + anim_dir)
 
 
+func respawn() -> void:
+	player_states.call_deferred("set_state", "idle")
+
+
 func apply_soft_collision() -> void:
 	move_and_slide(soft_collision.get_push_velocity())
 
@@ -137,8 +143,10 @@ func set_disabled(val: bool) -> void:
 	soft_collision_collision.call_deferred("set_disabled", val)
 	set_process(not val)
 	set_physics_process(not val)
-	if val:
-		pass
+	set_process_unhandled_input(not val)
+	if not val:
+		is_picking = Input.is_action_pressed("melee")
+		is_shooting = Input.is_action_pressed("shoot")
 	visible = not val
 
 

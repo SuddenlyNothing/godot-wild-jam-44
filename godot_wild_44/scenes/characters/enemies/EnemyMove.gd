@@ -14,6 +14,7 @@ var target_dir
 # Position to face towards
 var face_pos
 var knockback := Vector2()
+var player: Node setget set_player
 
 onready var speed := max_speed
 onready var anim_sprite := $VisualDependents/AnimatedSprite
@@ -103,6 +104,10 @@ func play_anim(anim: String) -> void:
 	if anim_sprite.animation == anim:
 		return
 	anim_sprite.play(anim)
+
+
+func set_player(val: Node) -> void:
+	player = val
 
 
 func _on_AnimatedSprite_frame_changed() -> void:

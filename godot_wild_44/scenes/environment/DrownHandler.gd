@@ -14,7 +14,7 @@ func _on_ignore_updated() -> void:
 	if not ice_tiles.ignore:
 		return
 	for i in queue_drown:
-		if not i in bodies_in_area:
+		if not i in bodies_in_area and is_instance_valid(i):
 			i.drown()
 	queue_drown.clear()
 

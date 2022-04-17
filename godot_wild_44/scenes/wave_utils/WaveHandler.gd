@@ -12,7 +12,12 @@ onready var spawn_delay := $SpawnDelay
 func _ready() -> void:
 	for i in range(1, get_child_count()):
 		get_child(i).connect("enemy_eliminated", self, "_on_enemy_eliminated")
-	spawn()
+
+
+func clear_enemies() -> void:
+	for child in get_children():
+		if child.is_in_group("enemy_spawner"):
+			child.clear_enemy()
 
 
 func spawn() -> void:
@@ -31,5 +36,4 @@ func _on_SpawnDelay_timeout() -> void:
 func _on_enemy_eliminated() -> void:
 	enemies_eliminated += 1
 	if enemies_eliminated == total_enemies:
-		print("wave finished")
 		emit_signal("wave_finished")

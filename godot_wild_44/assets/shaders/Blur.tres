@@ -18,4 +18,4 @@ resource_local_to_scene = true
 shader = SubResource( 1 )
 shader_param/blur_amount = 3.0
 shader_param/mix_amount = 0.5
-shader_param/color_over = Color( 0.384314, 0.490196, 0.643137, 1 )
+shader_param/color_over = Color( 0.141176, 0.168627, 0.290196, 1 )

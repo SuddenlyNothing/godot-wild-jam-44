@@ -8,7 +8,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 10
 script = ExtResource( 1 )
-font_path = "res://assets/fonts/Roboto-Regular.ttf"
+font_path = "res://assets/fonts/Packed.ttf"
 
 [node name="ResetAll" type="Button" parent="."]
 margin_left = 919.0
@@ -17,20 +17,5 @@ margin_bottom = 20.0
 size_flags_horizontal = 8
 text = "Reset Controls"
 script = ExtResource( 2 )
-
-[node name="SC" type="ScrollContainer" parent="."]
-margin_top = 30.0
-margin_right = 1024.0
-margin_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-scroll_horizontal_enabled = false
-
-[node name="ModuleParent" type="VBoxContainer" parent="SC"]
-margin_right = 1024.0
-margin_bottom = 570.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/separation = 10
 
 [connection signal="pressed" from="ResetAll" to="." method="_on_ResetAll_pressed"]

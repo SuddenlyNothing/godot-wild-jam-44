@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/environment/Water.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/environment/IceTiles.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/characters/enemies/Walrus.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/wave_utils/WaveHandler.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ui/gameplay/DialogPlayer.tscn" type="PackedScene" id=10]
+[ext_resource path="res://ui/gameplay/LoseScreen.tscn" type="PackedScene" id=11]
 
 [node name="Demo" type="Node2D"]
 script = ExtResource( 4 )
@@ -19,6 +20,8 @@ script = ExtResource( 4 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="DialogPlayer" parent="CanvasLayer" instance=ExtResource( 10 )]
+
+[node name="LoseScreen" parent="CanvasLayer" instance=ExtResource( 11 )]
 
 [node name="DrownHandler" parent="." instance=ExtResource( 5 )]
 

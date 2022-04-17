@@ -14,6 +14,13 @@ onready var t := $Tween
 onready var anim_sprite := $AnimatedSprite
 
 
+func clear_enemy() -> void:
+	if is_instance_valid(enemy):
+		t.remove_all()
+		anim_sprite.hide()
+		enemy.queue_free()
+
+
 func _enter_tree() -> void:
 	_draw_enemy()
 
@@ -43,11 +50,11 @@ func spawn() -> void:
 			if (player.position.x < position.x and anim_sprite.scale.x > 0) or \
 				(player.position.x > position.x and anim_sprite.scale.x < 0):
 					anim_sprite.scale.x *= -1
-	enemy.connect("tree_exited", self, "emit_signal", ["enemy_eliminated"])
+	enemy.connect("died", self, "emit_signal", ["enemy_eliminated"])
 
 
 func set_player(val: Node) -> void:
-	if enemy:
+	if is_instance_valid(enemy):
 		if enemy.is_in_group("needs_player"):
 			enemy.set_player(player)
 	player = val
@@ -59,6 +66,7 @@ func set_Enemy(val: PackedScene) -> void:
 
 
 func _draw_enemy() -> void:
+	$AnimatedSprite.visible = Engine.editor_hint
 	if Engine.editor_hint:
 		if Enemy:
 			var enemy = Enemy.instance()
@@ -67,6 +75,8 @@ func _draw_enemy() -> void:
 
 
 func _on_Tween_tween_all_completed() -> void:
+	if not is_instance_valid(enemy):
+		return
 	enemy.position = position
 	if enemy.is_in_group("needs_player"):
 		enemy.set_player(player)

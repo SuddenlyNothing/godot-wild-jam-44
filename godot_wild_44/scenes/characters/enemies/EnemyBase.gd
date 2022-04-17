@@ -1,6 +1,8 @@
 class_name EnemyBase
 extends KinematicBody2D
 
+signal died
+
 export(SpriteFrames) var spawn_frames
 export(Vector2) var sprite_offset
 export(int) var health: int = 3 setget set_health
@@ -9,7 +11,7 @@ export(Color) var slow_color := Color("dfeded")
 export(Color) var hurt_color := Color("bf2651")
 
 var freeze := false setget set_freeze
-var player: Node setget set_player
+var died := false
 
 onready var freeze_health: int = max_freeze_health setget set_freeze_health
 onready var freeze_timer := $FreezeTimer
@@ -70,16 +72,16 @@ func set_freeze(val: bool) -> void:
 
 
 func die() -> void:
+	if died:
+		return
+	died = true
 	if frozen_break_sfx.playing and is_a_parent_of(frozen_break_sfx):
 		remove_child(frozen_break_sfx)
 		get_parent().add_child(frozen_break_sfx)
 		frozen_break_sfx.position = position
 		frozen_break_sfx.connect("finished", frozen_break_sfx, "queue_free")
+	emit_signal("died")
 	queue_free()
-
-
-func set_player(val: Node) -> void:
-	player = val
 
 
 func _flash_hurt() -> void:

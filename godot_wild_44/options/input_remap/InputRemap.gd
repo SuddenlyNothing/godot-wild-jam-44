@@ -38,7 +38,7 @@ var map_key_button := {
 var reset_buttons = {}
 
 onready var reset_all := $ResetAll
-onready var module_parent := $SC/ModuleParent
+onready var module_parent := self
 
 
 # Called by the Save singleton

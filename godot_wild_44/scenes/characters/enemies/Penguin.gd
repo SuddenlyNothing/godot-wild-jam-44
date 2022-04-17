@@ -13,6 +13,7 @@ var state = states.ENTER
 var attack_pattern := []
 var attack_positions := []
 var rng := RandomNumberGenerator.new()
+var player: Node setget set_player
 
 onready var enter_exit_tween := $EnterExitTween
 onready var battle_timer := $BattleTimer
@@ -65,6 +66,10 @@ func set_freeze(val: bool) -> void:
 			Tween.TRANS_EXPO, Tween.EASE_OUT)
 	ice_reflection_tween.start()
 	.set_freeze(val)
+
+
+func set_player(val: Node) -> void:
+	player = val
 
 
 func _on_BattleTimer_timeout() -> void:
