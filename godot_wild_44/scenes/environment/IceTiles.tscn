@@ -462,5 +462,6 @@ script = ExtResource( 2 )
 
 [node name="IgnoreTimer" type="Timer" parent="."]
 wait_time = 0.05
+one_shot = true
 
 [connection signal="timeout" from="IgnoreTimer" to="." method="_on_IgnoreTimer_timeout"]

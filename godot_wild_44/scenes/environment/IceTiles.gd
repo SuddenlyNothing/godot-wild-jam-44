@@ -18,16 +18,21 @@ func repair_tiles() -> void:
 		for j in range(topleft.y, bottomright.y + 1):
 			set_cell(i, j, 0)
 	update_bitmask_region(topleft, bottomright)
+	update_dirty_quadrants()
+	ignore_timer.start()
 
 
 func remove_rand_amount(amount: int) -> void:
+	if get_used_cells().size() == 0:
+		return
+	set_ignore(true)
 	if amount >= get_used_cells().size():
 		emit_signal("all_tiles_used")
 	for i in amount:
 		if _remove_rand():
 			break
 	update_dirty_quadrants()
-	set_ignore(true)
+	call_deferred("set_ignore", false)
 
 
 func get_nearest_valid_pos(pos: Vector2) -> Vector2:
@@ -44,7 +49,6 @@ func get_nearest_valid_pos(pos: Vector2) -> Vector2:
 func set_ignore(val: bool) -> void:
 	ignore = val
 	if val:
-		ignore_timer.start()
 		emit_signal("ignore_updated")
 
 

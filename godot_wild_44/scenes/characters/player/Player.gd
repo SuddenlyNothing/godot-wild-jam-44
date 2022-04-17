@@ -2,6 +2,9 @@ extends KinematicBody2D
 
 signal started_pull
 
+export(int) var drown_damage := 20
+export(int) var damage := 10
+
 const IceShot := preload("res://scenes/characters/player/IceShot.tscn")
 const SplashParticles := preload("res://scenes/characters/SplashParticles.tscn")
 
@@ -21,7 +24,6 @@ var look_dir := Vector2()
 var is_pick_left := true
 var is_picking := false
 var is_shooting := false
-var drowned := false
 
 onready var player_states := $PlayerStates
 onready var anim_sprite := $YSort/AnimatedSprite
@@ -84,11 +86,8 @@ func move() -> void:
 func drown() -> void:
 	if not respawn_timer.is_inside_tree():
 		return
-	if drowned:
-		return
-	drowned = true
 	death_sfx.play()
-	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", 3)
+	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", drown_damage)
 	var splash_particles := SplashParticles.instance()
 	splash_particles.position = position
 	get_parent().add_child(splash_particles)
@@ -108,7 +107,7 @@ func hit(hit_dir: Vector2, hit_strength: int) -> void:
 	hit_flash_tween.start()
 	knockback = KNOCKBACK_FORCE * hit_strength * hit_dir
 	hurt_sfx.play()
-	get_tree().call_group("ice_tiles", "remove_rand_amount", 3)
+	get_tree().call_group("ice_tiles", "remove_rand_amount", damage)
 
 
 func set_anim(anim_prefix: String) -> void:
@@ -150,6 +149,7 @@ func set_disabled(val: bool) -> void:
 	set_process(not val)
 	set_physics_process(not val)
 	set_process_unhandled_input(not val)
+	knockback = Vector2()
 	if not val:
 		is_picking = Input.is_action_pressed("melee")
 		is_shooting = Input.is_action_pressed("shoot")
@@ -190,11 +190,11 @@ func _melee_attack() -> void:
 	snow_machine.hide()
 	swing_tween.remove_all()
 	if is_pick_left:
-		swing_tween.interpolate_property(pick, "rotation", pick.rotation, pick.rotation - PI, 0.3,
-				Tween.TRANS_QUART, Tween.EASE_OUT)
+		swing_tween.interpolate_property(pick, "rotation", pick.rotation,
+				pick.rotation - PI, 0.3, Tween.TRANS_QUART, Tween.EASE_OUT)
 	else:
-		swing_tween.interpolate_property(pick, "rotation", pick.rotation, pick.rotation + PI, 0.3,
-				Tween.TRANS_QUART, Tween.EASE_OUT)
+		swing_tween.interpolate_property(pick, "rotation", pick.rotation,
+				pick.rotation + PI, 0.3, Tween.TRANS_QUART, Tween.EASE_OUT)
 	swing_tween.start()
 	is_pick_left = not is_pick_left
 	pick_swing_sfx.play()
@@ -270,7 +270,6 @@ func _on_Hitbox_area_exited(area: Area2D) -> void:
 
 
 func _on_RespawnTimer_timeout() -> void:
-	drowned = false
 	emerge_sfx.play()
 	player_states.call_deferred("set_state", "idle")
 

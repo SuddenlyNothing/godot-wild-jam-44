@@ -89,7 +89,7 @@ func _on_EnterExitTween_tween_all_completed() -> void:
 			attack_timer.start()
 			attack()
 		states.EXIT:
-			queue_free()
+			die()
 
 
 func _on_AttackTimer_timeout() -> void:

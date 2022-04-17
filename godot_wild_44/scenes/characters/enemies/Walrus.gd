@@ -7,6 +7,7 @@ onready var hitbox := $VisualDependents/Hitbox
 onready var attack_pos := $VisualDependents/AttackPos
 onready var retreat_timer := $RetreatTimer
 onready var hitbox_collision := $VisualDependents/Hitbox/CollisionShape2D
+onready var attack_sfx := $AttackSFX
 
 
 func set_target() -> void:
@@ -21,6 +22,7 @@ func set_retreat_dir() -> void:
 
 
 func attack() -> void:
+	attack_sfx.play()
 	for body in hitbox.get_overlapping_bodies():
 		if body == player:
 			body.hit(position.direction_to(body.position), hit_scale)

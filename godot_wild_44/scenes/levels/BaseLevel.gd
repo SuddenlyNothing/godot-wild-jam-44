@@ -53,8 +53,8 @@ func _ready() -> void:
 func _on_LoseScreen_retry_wave_pressed() -> void:
 	ice_tiles.repair_tiles()
 	player.position = start_pos
-	wave_parent.get_child(wave).spawn()
 	player.respawn()
+	wave_parent.get_child(wave).spawn()
 
 
 # Restarts the level
@@ -74,6 +74,7 @@ func _on_IceTiles_all_tiles_used() -> void:
 	if wave >= wave_parent.get_child_count():
 		return
 	wave_parent.get_child(wave).clear_enemies()
+	get_tree().call_group("enemy", "queue_free")
 	lose_screen.enter()
 
 
