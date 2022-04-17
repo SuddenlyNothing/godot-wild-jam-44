@@ -15,7 +15,7 @@ onready var player := $YSort/Player
 onready var start_pos: Vector2 = player.position
 onready var dialog_player := $CL/DialogPlayer
 onready var lose_screen := $CL/LoseScreen
-onready var ice_tiles := $DrownHandler/IceTiles
+onready var ice_tiles := $IceTiles
 onready var wave_parent := $YSort/WaveParent
 
 
@@ -59,6 +59,7 @@ func _ready() -> void:
 
 # Fills ice tiles again and retries the current wave
 func _on_LoseScreen_retry_wave_pressed() -> void:
+	dialog_player.stop()
 	ice_tiles.repair_tiles()
 	player.position = start_pos
 	player.respawn()
@@ -70,6 +71,7 @@ func _on_LoseScreen_retry_wave_pressed() -> void:
 # Reset events and wave count
 # Move respawn and move player back to origin
 func _on_LoseScreen_restart_pressed() -> void:
+	dialog_player.stop()
 	ice_tiles.repair_tiles()
 	wave = 0
 	player.position = start_pos
@@ -81,6 +83,7 @@ func _on_LoseScreen_restart_pressed() -> void:
 func _on_IceTiles_all_tiles_used() -> void:
 	if wave >= wave_parent.get_child_count():
 		return
+	dialog_player.stop()
 	wave_parent.get_child(wave).clear_enemies()
 	get_tree().call_group("enemy", "queue_free")
 	lose_screen.enter()
@@ -93,6 +96,8 @@ func _on_DialogPlayer_dialog_finished() -> void:
 
 # Starts next event
 func _on_WaveHandler_wave_finished() -> void:
+	if ice_tiles.get_used_cells().empty():
+		return
 	wave += 1
 	ice_tiles.repair_tiles()
 	events_state = events_state.resume()

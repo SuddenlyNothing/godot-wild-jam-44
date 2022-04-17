@@ -12,24 +12,21 @@ next_scene = "res://scenes/levels/Level1.tscn"
 
 [node name="WaveHandler" parent="YSort/WaveParent" index="0" instance=ExtResource( 2 )]
 
-[node name="PenguinSpawner" parent="YSort/WaveParent/WaveHandler" index="1" instance=ExtResource( 5 )]
-position = Vector2( 532, 104 )
+[node name="WalrusSpawner" parent="YSort/WaveParent/WaveHandler" index="1" instance=ExtResource( 3 )]
+position = Vector2( 457, 228 )
 
-[node name="WaveHandler3" parent="YSort/WaveParent" index="1" instance=ExtResource( 2 )]
+[node name="WalrusSpawner2" parent="YSort/WaveParent/WaveHandler" index="2" instance=ExtResource( 3 )]
+position = Vector2( 608, 253 )
 
-[node name="WalrusSpawner" parent="YSort/WaveParent/WaveHandler3" index="1" instance=ExtResource( 3 )]
-position = Vector2( 446, 214 )
+[node name="WalrusSpawner3" parent="YSort/WaveParent/WaveHandler" index="3" instance=ExtResource( 3 )]
+position = Vector2( 468, 341 )
 
-[node name="PenguinSpawner" parent="YSort/WaveParent/WaveHandler3" index="2" instance=ExtResource( 5 )]
-position = Vector2( 729, 104 )
+[node name="WaveHandler2" parent="YSort/WaveParent" index="1" instance=ExtResource( 2 )]
 
-[node name="WaveHandler2" parent="YSort/WaveParent" index="2" instance=ExtResource( 2 )]
+[node name="PenguinSpawner" parent="YSort/WaveParent/WaveHandler2" index="1" instance=ExtResource( 5 )]
+position = Vector2( 526, 126 )
 
-[node name="PolarBearSpawner" parent="YSort/WaveParent/WaveHandler2" index="1" instance=ExtResource( 4 )]
-position = Vector2( 614, 260 )
+[node name="WaveHandler3" parent="YSort/WaveParent" index="2" instance=ExtResource( 2 )]
 
-[node name="PolarBearSpawner2" parent="YSort/WaveParent/WaveHandler2" index="2" instance=ExtResource( 4 )]
-position = Vector2( 580, 333 )
-
-[node name="PolarBearSpawner3" parent="YSort/WaveParent/WaveHandler2" index="3" instance=ExtResource( 4 )]
-position = Vector2( 512, 268 )
+[node name="PolarBearSpawner" parent="YSort/WaveParent/WaveHandler3" index="1" instance=ExtResource( 4 )]
+position = Vector2( 450, 274 )

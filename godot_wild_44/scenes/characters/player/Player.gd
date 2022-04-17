@@ -1,7 +1,5 @@
 extends KinematicBody2D
 
-signal started_pull
-
 export(int) var drown_damage := 20
 export(int) var damage := 10
 
@@ -57,6 +55,10 @@ func _ready() -> void:
 	_set_pick_facing(1)
 
 
+func get_rect() -> Vector2:
+	return body_collision.shape.extents
+
+
 func _process(delta: float) -> void:
 	var new_input := Input.get_vector("left", "right", "up", "down")
 	if input != Vector2():
@@ -86,6 +88,8 @@ func move() -> void:
 func drown() -> void:
 	if not respawn_timer.is_inside_tree():
 		return
+	if player_states.state == "death":
+		return
 	death_sfx.play()
 	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", drown_damage)
 	var splash_particles := SplashParticles.instance()
@@ -107,7 +111,7 @@ func hit(hit_dir: Vector2, hit_strength: int) -> void:
 	hit_flash_tween.start()
 	knockback = KNOCKBACK_FORCE * hit_strength * hit_dir
 	hurt_sfx.play()
-	get_tree().call_group("ice_tiles", "remove_rand_amount", damage)
+	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", damage)
 
 
 func set_anim(anim_prefix: String) -> void:
@@ -150,7 +154,10 @@ func set_disabled(val: bool) -> void:
 	set_physics_process(not val)
 	set_process_unhandled_input(not val)
 	knockback = Vector2()
-	if not val:
+	if val:
+		remove_from_group("drownable")
+	else:
+		add_to_group("drownable")
 		is_picking = Input.is_action_pressed("melee")
 		is_shooting = Input.is_action_pressed("shoot")
 	visible = not val

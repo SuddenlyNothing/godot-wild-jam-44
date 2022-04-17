@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/characters/enemies/IceDeathParticles.tscn" type="PackedScene" id=1]
+
+[node name="IceBreakParticles" instance=ExtResource( 1 )]
+amount = 8
+initial_velocity = 100.0

@@ -24,11 +24,16 @@ onready var freeze_texture := $VisualDependents/FreezeTexture
 onready var soft_collision_collision := $VisualDependents/SoftCollision/CollisionShape2D
 onready var step_sfx := $StepSFX
 onready var ice_reflection_tween := $IceReflectionTween
+onready var body_collision := $CollisionShape2D
 
 
 func _ready() -> void:
 	if face_pos:
 		set_facing()
+
+
+func get_rect() -> Vector2:
+	return body_collision.shape.extents
 
 
 func move_towards_target_pos() -> void:

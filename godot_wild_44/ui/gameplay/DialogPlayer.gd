@@ -50,6 +50,14 @@ func read_next() -> void:
 	reading = true
 
 
+func stop() -> void:
+	reading = false
+	has_dialog = false
+	t.remove_all()
+	text_sfx.stop()
+	hide()
+
+
 func update_keys():
 	label.text = curr_text.format(Variables.input_format)
 

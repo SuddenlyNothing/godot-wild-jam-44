@@ -44,7 +44,7 @@ shader_param/hit_strength = 0.0
 [sub_resource type="AudioStreamRandomPitch" id=6]
 audio_stream = ExtResource( 8 )
 
-[node name="EnemyBase" type="KinematicBody2D" groups=["drownable", "enemy"]]
+[node name="EnemyBase" type="KinematicBody2D" groups=["enemy"]]
 script = ExtResource( 1 )
 spawn_frames = SubResource( 4 )
 sprite_offset = Vector2( 0, -11 )
