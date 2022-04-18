@@ -17,6 +17,7 @@ onready var dialog_player := $CL/DialogPlayer
 onready var lose_screen := $CL/LoseScreen
 onready var ice_tiles := $IceTiles
 onready var wave_parent := $YSort/WaveParent
+onready var dynamic_camera := $DynamicCamera
 
 
 func events() -> void:
@@ -81,12 +82,12 @@ func _on_LoseScreen_restart_pressed() -> void:
 
 # Shows lose menu
 func _on_IceTiles_all_tiles_used() -> void:
+	lose_screen.enter()
 	if wave >= wave_parent.get_child_count():
 		return
 	dialog_player.stop()
 	wave_parent.get_child(wave).clear_enemies()
 	get_tree().call_group("enemy", "queue_free")
-	lose_screen.enter()
 
 
 # Starts next event

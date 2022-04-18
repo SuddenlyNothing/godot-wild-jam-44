@@ -236,10 +236,6 @@ script = ExtResource( 2 )
 position = Vector2( 0, -2.5 )
 shape = SubResource( 33 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-zoom = Vector2( 0.5, 0.5 )
-
 [node name="MeleeTimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true

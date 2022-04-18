@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ui/gameplay/DialogPlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/environment/Water.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/environment/DynamicCamera.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/environment/IceTiles.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/characters/player/Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/levels/BaseLevel.gd" type="Script" id=6]
@@ -29,6 +30,9 @@ one_shot = true
 position = Vector2( 528, 312 )
 
 [node name="WaveParent" type="YSort" parent="YSort"]
+
+[node name="DynamicCamera" parent="." instance=ExtResource( 3 )]
+position = Vector2( 528, 312 )
 
 [connection signal="timeout" from="EventDelayTimer" to="." method="_on_EventDelayTimer_timeout"]
 [connection signal="dialog_finished" from="CL/DialogPlayer" to="." method="_on_DialogPlayer_dialog_finished"]

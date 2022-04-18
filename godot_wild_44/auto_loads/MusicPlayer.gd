@@ -1,13 +1,9 @@
 extends Node
 
-var music : Dictionary = {}
 var num_lowers : int = 0
 var current : String = ""
 
-
-func _ready() -> void:
-	for i in get_children():
-		music[i.name.to_lower()] = i
+onready var t := $Tween
 
 
 func play(song: String) -> void:
@@ -15,14 +11,30 @@ func play(song: String) -> void:
 	if song == current:
 		return
 	stop_all()
-	music[song].play()
+	match song:
+		"level":
+			$Level.play()
+			$Boss.play()
+		"menu":
+			$Menu.play()
 	current = song
 
 
 func stop_all() -> void:
 	for child in get_children():
-		child.stop()
+		if child is AudioStreamPlayer:
+			child.stop()
 	current = ""
+
+
+func fade_in() -> void:
+	t.interpolate_property($Boss, "volume_db", -40, 10, 1)
+	t.start()
+
+
+func fade_out() -> void:
+	t.interpolate_property($Boss, "volume_db", 10, -40, 1)
+	t.start()
 
 
 func lower_volume() -> void:

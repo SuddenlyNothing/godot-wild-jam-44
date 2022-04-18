@@ -7,6 +7,7 @@ const DeathParticles := preload("res://scenes/characters/enemies/DeathParticles.
 const IceDeathParticles := preload("res://scenes/characters/enemies/" +\
 		"IceDeathParticles.tscn")
 const SplashParticles := preload("res://scenes/characters/SplashParticles.tscn")
+const DamageCounter := preload("res://ui/gameplay/DamageCounter.tscn")
 
 export(SpriteFrames) var spawn_frames
 export(Vector2) var sprite_offset
@@ -43,8 +44,10 @@ func set_freeze_health(val: int) -> void:
 
 
 func set_health(val: int, hit_dir: Vector2 = Vector2()) -> void:
-	health = val
+	if freeze:
+		val -= 2
 	if not (is_inside_tree() or val < health):
+		health = val
 		return
 	get_hit(hit_dir)
 	if val <= 0:
@@ -71,6 +74,11 @@ func set_health(val: int, hit_dir: Vector2 = Vector2()) -> void:
 		if freeze:
 			ice_hit_sfx.play()
 		hurt_sfx.play()
+	var damage_counter := DamageCounter.instance()
+	damage_counter.position = particle_position.global_position
+	damage_counter.text = str(health - val)
+	get_parent().add_child(damage_counter)
+	health = val
 
 
 func get_hit(hit_dir: Vector2) -> void:
@@ -111,6 +119,7 @@ func die() -> void:
 		frozen_break_sfx.position = position
 		frozen_break_sfx.connect("finished", frozen_break_sfx, "queue_free")
 	emit_signal("died")
+	get_tree().call_group("dynamic_camera", "shake")
 	queue_free()
 
 

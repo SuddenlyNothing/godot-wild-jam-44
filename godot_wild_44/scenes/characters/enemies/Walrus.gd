@@ -1,6 +1,6 @@
 extends EnemyMove
 
-export(int) var hit_scale := 1
+export(float) var hit_scale := 1
 
 onready var idle_wait_timer := $IdleWaitTimer
 onready var hitbox := $VisualDependents/Hitbox
@@ -29,10 +29,7 @@ func attack() -> void:
 
 
 func start_idle_wait_timer() -> void:
-	if randf() > 0.5:
-		idle_wait_timer.start(randf() * 2)
-	else:
-		idle_wait_timer.start(randf() * 3 + 3)
+	idle_wait_timer.start(randf() * 2)
 
 
 func start_retreat_timer() -> void:

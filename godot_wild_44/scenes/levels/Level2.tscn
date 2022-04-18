@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/levels/BaseLevel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/wave_utils/WaveHandler.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/wave_utils/PolarBearSpawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/wave_utils/WalrusSpawner.tscn" type="PackedScene" id=4]
+
+[node name="Level2" instance=ExtResource( 1 )]
+events = [ [ "Day 17, still no signs of human life nearby", "A cargo ship passed by, but unfortunately their captain said the ship was full", "I have managed to increase the size of my ice raft and it's 4x larger than my old apartment" ], [  ], [ "I'm starting to like it here", "Other than the occassional attacks it's nice and serene" ], [  ], [ "Woah, a polar bear!", "I never would have seen that if I was stuck in my New York apartment" ], [  ], [ "Or maybe not. Those are some aggressive bears", "At least there are no penguins here. Since polar bears and penguins live on opposite poles" ] ]
+next_scene = "res://scenes/levels/Level3.tscn"
+
+[node name="Player" parent="YSort" index="0"]
+can_shoot = false
+
+[node name="WaveHandler" parent="YSort/WaveParent" index="0" instance=ExtResource( 2 )]
+
+[node name="WalrusSpawner" parent="YSort/WaveParent/WaveHandler" index="1" instance=ExtResource( 4 )]
+position = Vector2( 583, 383 )
+
+[node name="WalrusSpawner2" parent="YSort/WaveParent/WaveHandler" index="2" instance=ExtResource( 4 )]
+position = Vector2( 448, 251 )
+
+[node name="WaveHandler2" parent="YSort/WaveParent" index="1" instance=ExtResource( 2 )]
+
+[node name="WalrusSpawner3" parent="YSort/WaveParent/WaveHandler2" index="1" instance=ExtResource( 4 )]
+position = Vector2( 469, 371 )
+
+[node name="PolarBearSpawner" parent="YSort/WaveParent/WaveHandler2" index="2" instance=ExtResource( 3 )]
+position = Vector2( 606, 252 )
+
+[node name="WaveHandler3" parent="YSort/WaveParent" index="2" instance=ExtResource( 2 )]
+
+[node name="PolarBearSpawner" parent="YSort/WaveParent/WaveHandler3" index="1" instance=ExtResource( 3 )]
+position = Vector2( 510, 392 )
+
+[node name="PolarBearSpawner2" parent="YSort/WaveParent/WaveHandler3" index="2" instance=ExtResource( 3 )]
+position = Vector2( 500, 238 )

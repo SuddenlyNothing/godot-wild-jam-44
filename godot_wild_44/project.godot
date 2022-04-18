@@ -63,8 +63,9 @@ _global_script_class_icons={
 [application]
 
 config/name="godot wild 44 game"
-run/main_scene="res://scenes/levels/Level1.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://ui/MainMenu.tscn"
+boot_splash/use_filter=false
+config/icon="res://assets/characters/player/player_icon.png"
 
 [autoload]
 

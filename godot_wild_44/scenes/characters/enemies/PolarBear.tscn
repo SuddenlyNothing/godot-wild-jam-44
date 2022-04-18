@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scenes/characters/enemies/EnemyMove.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/characters/enemies/PolarBear.gd" type="Script" id=2]
@@ -20,6 +20,9 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 } ]
+
+[sub_resource type="RectangleShape2D" id=55]
+extents = Vector2( 24, 9 )
 
 [sub_resource type="Shader" id=31]
 code = "shader_type canvas_item;
@@ -110,7 +113,7 @@ animations = [ {
 "frames": [ SubResource( 41 ), SubResource( 42 ), SubResource( 43 ), SubResource( 44 ), SubResource( 45 ), SubResource( 46 ), SubResource( 47 ) ],
 "loop": false,
 "name": "attack",
-"speed": 10.0
+"speed": 15.0
 } ]
 
 [sub_resource type="CircleShape2D" id=50]
@@ -132,6 +135,12 @@ audio_stream = ExtResource( 8 )
 script = ExtResource( 2 )
 spawn_frames = SubResource( 48 )
 sprite_offset = Vector2( 10, -29 )
+health = 10
+max_freeze_health = 2
+rect = SubResource( 55 )
+max_speed = 50.0
+knockback_force = 100
+hit_scale = 1.5
 
 [node name="EnemyMoveStates" parent="." index="0"]
 script = ExtResource( 5 )
@@ -146,6 +155,10 @@ polygon = PoolVector2Array( 20, 2, 25, -19, 36, -28, 36, -35, -11, -36, -24, -27
 frames = SubResource( 33 )
 animation = "idle"
 offset = Vector2( 10, -29 )
+
+[node name="SoftCollision" parent="VisualDependents" index="2"]
+push_acc = 400
+friction = 800
 
 [node name="FreezeTexture" parent="VisualDependents" index="3"]
 polygon = PoolVector2Array( -24, 1, -8.09182, 1.36155, 10, 2, 21, 2, 25, -19, 37, -28, 37, -36, 24, -39, 16, -37, -6, -39, -26, -27, -24, -15 )
@@ -183,5 +196,6 @@ stream = SubResource( 54 )
 bus = "SFX"
 
 [connection signal="body_entered" from="VisualDependents/Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="body_exited" from="VisualDependents/Hitbox" to="." method="_on_Hitbox_body_exited"]
 [connection signal="timeout" from="IdleWaitTimer" to="." method="_on_IdleWaitTimer_timeout"]
 [connection signal="timeout" from="RetreatTimer" to="." method="_on_RetreatTimer_timeout"]

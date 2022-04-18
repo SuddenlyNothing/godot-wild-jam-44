@@ -1,6 +1,7 @@
 class_name EnemyMove
 extends EnemyBase
 
+export(RectangleShape2D) var rect
 export(float) var max_speed := 25
 export(float) var friction := 800
 export(int) var attack_frame := 5
@@ -33,6 +34,8 @@ func _ready() -> void:
 
 
 func get_rect() -> Vector2:
+	if rect != null:
+		return rect.extents
 	return body_collision.shape.extents
 
 

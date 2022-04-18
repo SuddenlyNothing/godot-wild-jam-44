@@ -1,0 +1,82 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/shaders/Blur.tres" type="Material" id=1]
+[ext_resource path="res://assets/shaders/OptionsMenuBG.tres" type="Shader" id=2]
+[ext_resource path="res://assets/ui/themes/BlueToppedSettings.tres" type="Theme" id=3]
+[ext_resource path="res://utils/ButtonChangeScene.gd" type="Script" id=4]
+[ext_resource path="res://ui/WinScreen.gd" type="Script" id=5]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/COLOR1 = Color( 0.11, 0.57, 0.74, 1 )
+shader_param/COLOR2 = Color( 0.83, 0.62, 0.25, 1 )
+shader_param/SUN_COLOR = Color( 1, 1, 0, 1 )
+shader_param/SUN_POS = Vector2( 1.05, 0.02 )
+shader_param/SUN_FEATHER = 0.05
+shader_param/SUN_SIZE = 0.1
+shader_param/distortion_speed = 0.5
+
+[node name="WinScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+script = ExtResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource( 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="M" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 200
+custom_constants/margin_top = 50
+custom_constants/margin_left = 200
+custom_constants/margin_bottom = 50
+
+[node name="ColorRect2" type="ColorRect" parent="M"]
+material = ExtResource( 1 )
+margin_left = 200.0
+margin_top = 50.0
+margin_right = 824.0
+margin_bottom = 550.0
+
+[node name="V" type="VBoxContainer" parent="M"]
+margin_left = 200.0
+margin_top = 50.0
+margin_right = 824.0
+margin_bottom = 550.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="M/V"]
+margin_left = 200.0
+margin_top = 99.0
+margin_right = 424.0
+margin_bottom = 126.0
+size_flags_horizontal = 4
+text = "Congrats on winning!"
+
+[node name="Label2" type="Label" parent="M/V"]
+margin_left = 62.0
+margin_top = 146.0
+margin_right = 562.0
+margin_bottom = 353.0
+rect_min_size = Vector2( 500, 0 )
+size_flags_horizontal = 4
+text = "Thank you for playing the game! This one was yet another stressful jam. I really hope that you liked the art, the artist worked really hard on that. Overall, we definitely overscoped, but we managed to scope it down the last few days. Happy Easter to everyone that celebrates!"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Menu" type="Button" parent="M/V"]
+margin_left = 254.0
+margin_top = 373.0
+margin_right = 370.0
+margin_bottom = 400.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Main Menu"
+script = ExtResource( 4 )
+next_scene = "res://ui/MainMenu.tscn"

@@ -83,3 +83,4 @@ func _on_Tween_tween_all_completed() -> void:
 		enemy.set_player(player)
 	anim_sprite.hide()
 	get_parent().add_child(enemy)
+	get_tree().call_group("dynamic_camera", "shake")

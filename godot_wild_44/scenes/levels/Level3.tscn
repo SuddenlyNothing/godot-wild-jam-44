@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/levels/BaseLevel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/wave_utils/WalrusSpawner.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/wave_utils/WaveHandler.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/wave_utils/PolarBearSpawner.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/wave_utils/PenguinSpawner.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/levels/Level3.gd" type="Script" id=6]
+
+[node name="Level3" instance=ExtResource( 1 )]
+script = ExtResource( 6 )
+events = [ [ "Those attacks are relentless", "Thankfully, my friends dropped off a snow gun yesterday. Press {shoot} to shoot" ], [  ], [  ], [ "I need... to catch... my breath a little", "There's definitely a metaphor here about habitat destruction. Oh the irony" ], [  ], [ "No way... Is that a..." ], [  ], [ "It's too dangerous here. I gotta get back", "I can't believe they added penguins" ] ]
+next_scene = "res://ui/WinScreen.tscn"
+
+[node name="WaveHandler" parent="YSort/WaveParent" index="0" instance=ExtResource( 3 )]
+
+[node name="WalrusSpawner" parent="YSort/WaveParent/WaveHandler" index="1" instance=ExtResource( 2 )]
+position = Vector2( 479, 240 )
+
+[node name="WalrusSpawner2" parent="YSort/WaveParent/WaveHandler" index="2" instance=ExtResource( 2 )]
+position = Vector2( 578, 365 )
+
+[node name="WaveHandler2" parent="YSort/WaveParent" index="1" instance=ExtResource( 3 )]
+
+[node name="WalrusSpawner" parent="YSort/WaveParent/WaveHandler2" index="1" instance=ExtResource( 2 )]
+position = Vector2( 575, 255 )
+
+[node name="WalrusSpawner2" parent="YSort/WaveParent/WaveHandler2" index="2" instance=ExtResource( 2 )]
+position = Vector2( 454, 380 )
+
+[node name="PolarBearSpawner" parent="YSort/WaveParent/WaveHandler2" index="3" instance=ExtResource( 4 )]
+position = Vector2( 464, 293 )
+
+[node name="PolarBearSpawner2" parent="YSort/WaveParent/WaveHandler2" index="4" instance=ExtResource( 4 )]
+position = Vector2( 606, 320 )
+
+[node name="WaveHandler3" parent="YSort/WaveParent" index="2" instance=ExtResource( 3 )]
+
+[node name="PolarBearSpawner" parent="YSort/WaveParent/WaveHandler3" index="1" instance=ExtResource( 4 )]
+position = Vector2( 464, 293 )
+
+[node name="PolarBearSpawner3" parent="YSort/WaveParent/WaveHandler3" index="2" instance=ExtResource( 4 )]
+position = Vector2( 538, 259 )
+
+[node name="PolarBearSpawner4" parent="YSort/WaveParent/WaveHandler3" index="3" instance=ExtResource( 4 )]
+position = Vector2( 510, 383 )
+
+[node name="PolarBearSpawner2" parent="YSort/WaveParent/WaveHandler3" index="4" instance=ExtResource( 4 )]
+position = Vector2( 606, 320 )
+
+[node name="WaveHandler4" parent="YSort/WaveParent" index="3" instance=ExtResource( 3 )]
+
+[node name="PenguinSpawner" parent="YSort/WaveParent/WaveHandler4" index="1" instance=ExtResource( 5 )]
+position = Vector2( 525, 116 )
+
+[node name="Position2D" type="Position2D" parent="." index="6"]
+position = Vector2( 528, 312 )

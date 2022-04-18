@@ -29,7 +29,8 @@ func is_rect_safe(pos: Vector2, rect: Vector2) -> bool:
 	if get_cellv(world_to_map(pos + rect)) != -1 or\
 			get_cellv(world_to_map(pos - rect)) != -1 or\
 			get_cellv(world_to_map(pos + Vector2(rect.x, -rect.y))) != -1 or\
-			get_cellv(world_to_map(pos + Vector2(-rect.x, rect.y))) != -1:
+			get_cellv(world_to_map(pos + Vector2(-rect.x, rect.y))) != -1 or\
+			get_cellv(world_to_map(pos)) != -1:
 		return true
 	return false
 

@@ -1,6 +1,8 @@
 extends EnemyMove
 
-export(int) var hit_scale := 1
+export(float) var hit_scale := 1
+
+var is_player_in_hitbox := false
 
 onready var idle_wait_timer := $IdleWaitTimer
 onready var hitbox := $VisualDependents/Hitbox
@@ -29,10 +31,7 @@ func attack() -> void:
 
 
 func start_idle_wait_timer() -> void:
-	if randf() > 0.5:
-		idle_wait_timer.start(randf() * 2)
-	else:
-		idle_wait_timer.start(randf() * 3 + 3)
+	idle_wait_timer.start(randf() * 2)
 
 
 func start_retreat_timer() -> void:
@@ -46,8 +45,13 @@ func _on_IdleWaitTimer_timeout() -> void:
 func _on_Hitbox_body_entered(body: Node) -> void:
 	if not body.is_in_group("player"):
 		return
-	if enemy_move_states.state != "attack":
-		enemy_move_states.call_deferred("set_state", "attack")
+	is_player_in_hitbox = true
+
+
+func _on_Hitbox_body_exited(body: Node) -> void:
+	if not body.is_in_group("player"):
+		return
+	is_player_in_hitbox = false
 
 
 func _on_RetreatTimer_timeout() -> void:

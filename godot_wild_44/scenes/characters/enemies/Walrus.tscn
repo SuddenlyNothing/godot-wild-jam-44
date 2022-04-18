@@ -39,6 +39,7 @@ audio_stream = ExtResource( 6 )
 
 [node name="Walrus" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+max_freeze_health = 1
 after_attack_state = "retreat"
 
 [node name="EnemyMoveStates" parent="." index="0"]
@@ -55,6 +56,9 @@ animation = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisualDependents/Hitbox" index="0"]
 position = Vector2( 20, -7 )
 shape = SubResource( 1 )
+
+[node name="SoftCollision" parent="VisualDependents" index="3"]
+friction = 1000
 
 [node name="AttackPos" type="Position2D" parent="VisualDependents" index="4"]
 position = Vector2( 22, -1 )

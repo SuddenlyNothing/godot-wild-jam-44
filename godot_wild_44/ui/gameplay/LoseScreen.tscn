@@ -47,9 +47,10 @@ margin_right = 553.0
 margin_bottom = 137.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-text = "THE CREATURES TOOK OVER"
+text = "THE WILDERNESS WON"
 align = 1
 valign = 1
+uppercase = true
 
 [node name="V" type="VBoxContainer" parent="M/M/V"]
 margin_top = 339.0

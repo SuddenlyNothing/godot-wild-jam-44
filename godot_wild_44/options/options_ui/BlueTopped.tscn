@@ -114,7 +114,7 @@ size_flags_horizontal = 10
 size_flags_vertical = 3
 text = "Menu"
 script = ExtResource( 2 )
-next_scene = "res://scenes/Demo.tscn"
+next_scene = "res://ui/MainMenu.tscn"
 
 [node name="Back" type="Button" parent="M/V/V"]
 margin_left = 774.0

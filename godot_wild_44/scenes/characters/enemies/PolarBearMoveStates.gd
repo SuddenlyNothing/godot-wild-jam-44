@@ -28,6 +28,14 @@ func _enter_state(new_state : String, old_state) -> void:
 	._enter_state(new_state, old_state)
 
 
+func _get_transition(delta : float):
+	match state:
+		states.move:
+			if parent.is_player_in_hitbox:
+				return states.attack
+	return ._get_transition(delta)
+
+
 func _exit_state(old_state, new_state : String) -> void:
 	match old_state:
 		states.retreat:

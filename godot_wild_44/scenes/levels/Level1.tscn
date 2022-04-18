@@ -1,32 +1,25 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/levels/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/wave_utils/WaveHandler.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/wave_utils/WalrusSpawner.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/wave_utils/PolarBearSpawner.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/wave_utils/PenguinSpawner.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/levels/Level1.gd" type="Script" id=4]
 
 [node name="Level1" instance=ExtResource( 1 )]
-events = [ [  ], [ "Whoa I can have text here? Press {up}" ], [ "This is the other color in comparison" ], [  ], [ "I can't believe you beat that wave!", "Here try another one!" ], [  ], [ "GGz dude go on" ] ]
-next_scene = "res://scenes/levels/Level1.tscn"
+script = ExtResource( 4 )
+events = [ [ "Press {up}, {down}, {left}, {right} to move. Mouse click for next dialog", "You can always rebind your keys through the settings menu. Press {pause}" ], [ "What the heck was that?", "I must be hallucinating from the lack of human contact", "It's been 3 days since my friends pulled that prank on me", "I'm starting to think they just don't like me", "At least I have this pick though. Press {melee} to swing" ], [  ], [ "Holy carp!", "The animals must not like me too", "Why am I so hateable?" ] ]
+text_color = [ Color( 1, 1, 1, 1 ) ]
+next_scene = "res://scenes/levels/Level2.tscn"
+
+[node name="IceTiles" parent="." index="3"]
+tile_data = PoolIntArray( 720916, 0, 8, 720917, 0, 10, 720918, 0, 10, 720919, 0, 11, 786452, 0, 65544, 786453, 0, 131081, 786454, 0, 131081, 786455, 0, 131083, 851988, 0, 65544, 851989, 0, 131081, 851990, 0, 131081, 851991, 0, 131083, 917524, 0, 196616, 917525, 0, 196617, 917526, 0, 196617, 917527, 0, 196619 )
+topleft = Vector2( 20, 11 )
+bottomright = Vector2( 23, 14 )
+
+[node name="Player" parent="YSort" index="0"]
+can_shoot = false
 
 [node name="WaveHandler" parent="YSort/WaveParent" index="0" instance=ExtResource( 2 )]
 
 [node name="WalrusSpawner" parent="YSort/WaveParent/WaveHandler" index="1" instance=ExtResource( 3 )]
-position = Vector2( 457, 228 )
-
-[node name="WalrusSpawner2" parent="YSort/WaveParent/WaveHandler" index="2" instance=ExtResource( 3 )]
-position = Vector2( 608, 253 )
-
-[node name="WalrusSpawner3" parent="YSort/WaveParent/WaveHandler" index="3" instance=ExtResource( 3 )]
-position = Vector2( 468, 341 )
-
-[node name="WaveHandler2" parent="YSort/WaveParent" index="1" instance=ExtResource( 2 )]
-
-[node name="PenguinSpawner" parent="YSort/WaveParent/WaveHandler2" index="1" instance=ExtResource( 5 )]
-position = Vector2( 526, 126 )
-
-[node name="WaveHandler3" parent="YSort/WaveParent" index="2" instance=ExtResource( 2 )]
-
-[node name="PolarBearSpawner" parent="YSort/WaveParent/WaveHandler3" index="1" instance=ExtResource( 4 )]
-position = Vector2( 450, 274 )
+position = Vector2( 527, 335 )

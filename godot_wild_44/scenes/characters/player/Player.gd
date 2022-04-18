@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 export(int) var drown_damage := 20
 export(int) var damage := 10
+export(bool) var can_shoot := true
 
 const IceShot := preload("res://scenes/characters/player/IceShot.tscn")
 const SplashParticles := preload("res://scenes/characters/SplashParticles.tscn")
@@ -92,6 +93,7 @@ func drown() -> void:
 		return
 	death_sfx.play()
 	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", drown_damage)
+	get_tree().call_group("dynamic_camera", "shake")
 	var splash_particles := SplashParticles.instance()
 	splash_particles.position = position
 	get_parent().add_child(splash_particles)
@@ -105,13 +107,14 @@ func drown() -> void:
 		t.start()
 
 
-func hit(hit_dir: Vector2, hit_strength: int) -> void:
+func hit(hit_dir: Vector2, hit_strength: float) -> void:
 	hit_flash_tween.interpolate_property(anim_sprite.get_material(), "shader_param/hit_strength",
 			1, 0, 0.3)
 	hit_flash_tween.start()
 	knockback = KNOCKBACK_FORCE * hit_strength * hit_dir
 	hurt_sfx.play()
-	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", damage)
+	get_tree().call_group_flags(2, "ice_tiles", "remove_rand_amount", damage * int(hit_strength + 1))
+	get_tree().call_group("dynamic_camera", "shake")
 
 
 func set_anim(anim_prefix: String) -> void:
@@ -211,6 +214,8 @@ func _melee_attack() -> void:
 
 
 func _ice_shot() -> void:
+	if not can_shoot:
+		return
 	snow_machine.show()
 	pick.hide()
 	var ice_shot := IceShot.instance()
